@@ -1,6 +1,7 @@
 
 train:
-	rasa train
-
+	cd bot/ && \
+		rasa train
 run:
-	rasa run
+	cd bot/ && \
+		rasa run
