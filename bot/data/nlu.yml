@@ -1,0 +1,64 @@
+version: "3.1"
+
+nlu:
+- intent: start
+
+- intent: greet
+  examples: |
+    - oi
+    - ola
+    - alô
+
+- intent: goodbye
+  examples: |
+    - tchau
+    - estou indo embora
+    - vou nessa
+    - xau
+
+- intent: affirm
+  examples: |
+    - sim
+    - s
+    - concordo
+    - com certeza
+    - parece bom
+    - correto
+
+- intent: deny
+  examples: |
+    - não
+    - nao
+    - n
+    - nunca
+    - não concordo
+    - sem condição
+
+- intent: mood_great
+  examples: |
+    - perfeito
+    - ótimo
+    - excelente
+    - maravilha
+    - estou bem
+    - me sinto bem
+    - muito bem
+
+- intent: mood_unhappy
+  examples: |
+    - horrível
+    - estou triste
+    - não me sinto bem
+    - estou desapontado
+    - muito triste
+    - triste
+    - infeliz
+    - nao estou bem
+    - extremamente triste
+
+- intent: bot_challenge
+  examples: |
+    - você é um robô?
+    - você é humano?
+    - estou falando com um robô?
+    - estou falando com um humano?

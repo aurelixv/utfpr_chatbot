@@ -1,0 +1,17 @@
+# hide credentials
+bot/credentials.yml
+
+# rasa cache folder
+bot/.rasa/
+
+# vscode temp files
+.vscode/
+
+# trained models
+bot/models/*
+
+# python cache
+bot/actions/__pycache__/
+
+# python venv
+venv/

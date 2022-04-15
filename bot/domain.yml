@@ -1,0 +1,54 @@
+version: "3.1"
+
+intents:
+  - start
+  - greet
+  - goodbye
+  - affirm
+  - deny
+  - mood_great
+  - mood_unhappy
+  - bot_challenge
+
+responses:
+  utter_start:
+    - buttons:
+      - payload: /estagio
+        title: Estágio
+      - payload: /site
+        title: Site
+      text: Olá, sou o bot, muito prazer! Como posso ajudar?
+
+  utter_boas_vindas:
+    - text: "Olá, eu sou o bot, como posso ajudar?"
+
+  utter_despedida:
+    - text: "Foi bom conversar com você!"
+
+  utter_greet:
+  - buttons:
+    - payload: /bem
+      title: Estou bem
+    - payload: /mal
+      title: Estou mal
+    text: "Olá, como você está?"
+
+  utter_cheer_up:
+  - text: "Algo pra te alegrar:"
+    image: "https://i.imgur.com/nGF1K8f.jpg"
+
+  utter_did_that_help:
+  - text: "Isso ajudou você?"
+
+  utter_happy:
+  - text: "Legal!"
+
+  utter_goodbye:
+  - text: "Tchau!"
+
+  utter_iamabot:
+  - text: "Eu ser robô..."
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true
