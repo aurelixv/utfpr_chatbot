@@ -2,13 +2,8 @@ version: "3.1"
 
 intents:
   - start
-  - greet
-  - goodbye
-  - affirm
-  - deny
-  - mood_great
-  - mood_unhappy
-  - bot_challenge
+  - chitchat
+  - faq
 
 responses:
   utter_start:
@@ -19,35 +14,44 @@ responses:
         title: Site
       text: Olá, sou o bot, muito prazer! Como posso ajudar?
 
-  utter_boas_vindas:
-    - text: "Olá, eu sou o bot, como posso ajudar?"
+  utter_chitchat/greet:
+    - text: Ola!
 
-  utter_despedida:
-    - text: "Foi bom conversar com você!"
+  utter_chitchat/goodbye:
+    - text: Tchau!
 
-  utter_greet:
-  - buttons:
-    - payload: /bem
-      title: Estou bem
-    - payload: /mal
-      title: Estou mal
-    text: "Olá, como você está?"
+  utter_faq/estagio:
+    - text: "Informacoes sobre estagio: em breve"
 
-  utter_cheer_up:
-  - text: "Algo pra te alegrar:"
-    image: "https://i.imgur.com/nGF1K8f.jpg"
+  # utter_boas_vindas:
+  #   - text: "Olá, eu sou o bot, como posso ajudar?"
 
-  utter_did_that_help:
-  - text: "Isso ajudou você?"
+  # utter_despedida:
+  #   - text: "Foi bom conversar com você!"
 
-  utter_happy:
-  - text: "Legal!"
+  # utter_greet:
+  # - buttons:
+  #   - payload: /bem
+  #     title: Estou bem
+  #   - payload: /mal
+  #     title: Estou mal
+  #   text: "Olá, como você está?"
 
-  utter_goodbye:
-  - text: "Tchau!"
+  # utter_cheer_up:
+  # - text: "Algo pra te alegrar:"
+  #   image: "https://i.imgur.com/nGF1K8f.jpg"
 
-  utter_iamabot:
-  - text: "Eu ser robô..."
+  # utter_did_that_help:
+  # - text: "Isso ajudou você?"
+
+  # utter_happy:
+  # - text: "Legal!"
+
+  # utter_goodbye:
+  # - text: "Tchau!"
+
+  # utter_iamabot:
+  # - text: "Eu ser robô..."
 
 session_config:
   session_expiration_time: 60

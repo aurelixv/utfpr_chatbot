@@ -2,63 +2,74 @@ version: "3.1"
 
 nlu:
 - intent: start
+  examples: |
+    - /start
+    - start
 
-- intent: greet
+- intent: chitchat/greet
   examples: |
     - oi
     - ola
     - alô
 
-- intent: goodbye
+- intent: chitchat/goodbye
   examples: |
     - tchau
     - estou indo embora
     - vou nessa
     - xau
 
-- intent: affirm
+- intent: faq/estagio
   examples: |
-    - sim
-    - s
-    - concordo
-    - com certeza
-    - parece bom
-    - correto
+    - informacoes sobre estagio
+    - quero saber sobre estagio
+    - onde encontro estagio
+    - estagio obrigatorio
+    - estagio nao obrigatorio
 
-- intent: deny
-  examples: |
-    - não
-    - nao
-    - n
-    - nunca
-    - não concordo
-    - sem condição
+# - intent: chitchat/affirm
+#   examples: |
+#     - sim
+#     - s
+#     - concordo
+#     - com certeza
+#     - parece bom
+#     - correto
 
-- intent: mood_great
-  examples: |
-    - perfeito
-    - ótimo
-    - excelente
-    - maravilha
-    - estou bem
-    - me sinto bem
-    - muito bem
+# - intent: chitchat/deny
+#   examples: |
+#     - não
+#     - nao
+#     - n
+#     - nunca
+#     - não concordo
+#     - sem condição
 
-- intent: mood_unhappy
-  examples: |
-    - horrível
-    - estou triste
-    - não me sinto bem
-    - estou desapontado
-    - muito triste
-    - triste
-    - infeliz
-    - nao estou bem
-    - extremamente triste
+# - intent: chitchat/mood_great
+#   examples: |
+#     - perfeito
+#     - ótimo
+#     - excelente
+#     - maravilha
+#     - estou bem
+#     - me sinto bem
+#     - muito bem
 
-- intent: bot_challenge
-  examples: |
-    - você é um robô?
-    - você é humano?
-    - estou falando com um robô?
-    - estou falando com um humano?
+# - intent: chitchat/mood_unhappy
+#   examples: |
+#     - horrível
+#     - estou triste
+#     - não me sinto bem
+#     - estou desapontado
+#     - muito triste
+#     - triste
+#     - infeliz
+#     - nao estou bem
+#     - extremamente triste
+
+# - intent: chitchat/bot_challenge
+#   examples: |
+#     - você é um robô?
+#     - você é humano?
+#     - estou falando com um robô?
+#     - estou falando com um humano?
