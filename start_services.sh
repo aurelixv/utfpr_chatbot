@@ -1,3 +1,2 @@
-#cd app/
-# Start rasa server with nlu model
-rasa run --debug -p $PORT
+# inicializa o servidor rasa
+rasa run -vv -p $PORT

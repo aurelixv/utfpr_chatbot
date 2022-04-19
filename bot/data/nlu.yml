@@ -26,6 +26,7 @@ nlu:
     - onde encontro estagio
     - estagio obrigatorio
     - estagio nao obrigatorio
+    - estagio
 
 # - intent: chitchat/affirm
 #   examples: |

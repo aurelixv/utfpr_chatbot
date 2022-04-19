@@ -7,6 +7,7 @@
 - Rasa Core
 - Python
 - Git
+- ngrok
 - Docker
 - Heroku 
 
@@ -23,4 +24,10 @@ make train
 #### Subir ambiente:
 ```shell
 make run
+```
+
+#### Deploy local conectando ao telegram:
+```shell
+ngrok http 5005
+# Após rodar, copiar o endereço https e colar no arquivo credentials.yml
 ```
