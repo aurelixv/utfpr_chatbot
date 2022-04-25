@@ -6,6 +6,21 @@ nlu:
     - /start
     - start
 
+- intent: enrollment_schedule
+  examples: |
+    - quero o cronograma de matricula
+    - matricula de veteranos
+    - data da matricula
+    - qual a data da matricula para o campus [Curitiba](city)
+    - cronograma do campus [Dois Vizinhos](city)
+    - quando começa a matrícula em [medianeira](city)
+
+- intent: inform
+  examples: |
+    - campus [Curitiba](city)
+    - cidade de [medianeira](city)
+    - na universidade [Dois Vizinhos](city)
+
 - intent: chitchat/greet
   examples: |
     - oi
@@ -27,6 +42,25 @@ nlu:
     - estagio obrigatorio
     - estagio nao obrigatorio
     - estagio
+
+- lookup: city
+  examples: |
+    - Apucarana
+    - Campo Mourão
+    - Campo Mourao
+    - Cornélio Procópio
+    - Cornelio Procopio
+    - Curitiba
+    - Dois Vizinhos
+    - Francisco Beltrão
+    - Francisco Beltrao
+    - Guarapuava
+    - Londrina
+    - Medianeira
+    - Pato Branco
+    - Ponta Grossa
+    - Santa Helena
+    - Toledo
 
 # - intent: chitchat/affirm
 #   examples: |

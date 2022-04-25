@@ -10,6 +10,7 @@ language: pt-br
 pipeline:
   - name: WhitespaceTokenizer
   - name: RegexFeaturizer
+  - name: RegexEntityExtractor
   - name: LexicalSyntacticFeaturizer
   - name: CountVectorsFeaturizer
   - name: CountVectorsFeaturizer

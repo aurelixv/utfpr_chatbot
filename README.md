@@ -31,3 +31,8 @@ make run
 ngrok http 5005
 # Após rodar, copiar o endereço https e colar no arquivo credentials.yml
 ```
+
+#### Para inicializar o postgres do terminal:
+```shell
+heroku pg:psql postgresql-asymmetrical-62638 --app utfpr-chatbot
+```

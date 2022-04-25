@@ -1,2 +1,2 @@
 # inicializa o servidor rasa
-rasa run -vv -p $PORT
+rasa run -p $PORT

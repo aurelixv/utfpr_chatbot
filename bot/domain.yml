@@ -1,9 +1,25 @@
 version: "3.1"
 
+forms:
+  enrollment_schedule_form:
+    required_slots:
+        - city
+
+entities:
+  - city
+slots:
+  city:
+    type: text
+    mappings:
+    - type: from_entity
+      entity: city
+
 intents:
   - start
   - chitchat
   - faq
+  - enrollment_schedule
+  - inform
 
 responses:
   utter_start:
@@ -22,6 +38,16 @@ responses:
 
   utter_faq/estagio:
     - text: "Informacoes sobre estagio: em breve"
+
+  utter_ask_city:
+    - text: Qual cidade?
+
+  utter_submit:
+  - text: "All done!"
+
+  utter_slots_values:
+  - text: "Cronograma de matricula do campus:\n
+            - cidade: {city}"
 
   # utter_boas_vindas:
   #   - text: "Olá, eu sou o bot, como posso ajudar?"

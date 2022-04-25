@@ -10,3 +10,5 @@ deploy:
 	heroku container:login && \
 	heroku container:push web -a utfpr-chatbot && \
 	heroku container:release web -a utfpr-chatbot
+ngrok:
+	ngrok http 5005

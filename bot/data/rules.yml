@@ -1,18 +1,32 @@
 version: "3.1"
 
 rules:
+  - rule: start
+    steps:
+    - intent: start
+    - action: utter_start
 
-- rule: start
-  steps:
-  - intent: start
-  - action: utter_start
+  - rule: respond to FAQs
+    steps:
+    - intent: faq
+    - action: utter_faq
 
-- rule: respond to FAQs
-  steps:
-  - intent: faq
-  - action: utter_faq
+  - rule: respond to chitchat
+    steps:
+    - intent: chitchat
+    - action: utter_chitchat
 
-- rule: respond to chitchat
-  steps:
-  - intent: chitchat
-  - action: utter_chitchat
+  - rule: activate restaurant form
+    steps:
+      - intent: enrollment_schedule   # intent that triggers form activation
+      - action: enrollment_schedule_form      # run the form
+      - active_loop: enrollment_schedule_form # this form is active
+
+  - rule: submit form
+    condition:
+    - active_loop: enrollment_schedule_form   # this form must be active
+    steps:
+      - action: enrollment_schedule_form      # run the form
+      - active_loop: null            # the form is no longer active because it has been filled
+      - action: utter_submit         # action to take after the form is complete
+      - action: utter_slots_values   # action to take after the form is complete
