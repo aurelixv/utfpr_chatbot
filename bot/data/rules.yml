@@ -16,7 +16,7 @@ rules:
     - intent: chitchat
     - action: utter_chitchat
 
-  - rule: activate restaurant form
+  - rule: activate enrollment_schedule form
     steps:
       - intent: enrollment_schedule   # intent that triggers form activation
       - action: enrollment_schedule_form      # run the form
@@ -30,3 +30,4 @@ rules:
       - active_loop: null            # the form is no longer active because it has been filled
       - action: utter_submit         # action to take after the form is complete
       - action: utter_slots_values   # action to take after the form is complete
+      - action: action_hello_world

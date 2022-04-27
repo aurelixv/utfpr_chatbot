@@ -1,5 +1,8 @@
 version: "3.1"
 
+actions:
+  - action_hello_world
+
 forms:
   enrollment_schedule_form:
     required_slots:
