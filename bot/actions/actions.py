@@ -8,9 +8,24 @@ from rasa_sdk.executor import CollectingDispatcher
 
 import yaml
 from yaml.loader import SafeLoader
+from unidecode import unidecode
 
-with open('data/enrollment_schedule.yml') as f:
-    e_schedule = yaml.load(f, Loader=SafeLoader)
+def get_schedule(city: Text) -> Dict:
+    # read the schedules file
+    try:
+        with open('data/enrollment_schedule.yml', encoding='latin1') as file:
+            schedules = yaml.load(file, Loader=SafeLoader)
+    except OSError:
+        return None
+
+    # pre-process the city parameter
+    city = unidecode(city.lower())
+
+    # query the data
+    try:
+        return (schedules['year'], schedules['semester'], schedules[city])
+    except KeyError:
+        return None
 
 class ActionHelloWorld(Action):
 
@@ -22,8 +37,13 @@ class ActionHelloWorld(Action):
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
         city = tracker.get_slot('city')
-        data_inicio = e_schedule[city]['data_inicio']
+        year, semester, schedule = get_schedule(city) or (None, None, None)
 
-        dispatcher.utter_message(text=f"Hello World! {city} - {data_inicio}")
+        if year is not None and semester is not None and schedule is not None:
+            dispatcher.utter_message(text=f"Matrícula de veteranos do {semester}o semestre de {year} para a cidade {city}:\n" \
+                + f"Início: {schedule['data_inicio']} a partir das {schedule['hora_inicio']} horas.\n" \
+                + f"Término: {schedule['data_termino']} até às {schedule['hora_termino']} horas.")
+        else:
+            dispatcher.utter_message(text=f"Me desculpe, mas não consegui localizar o cronograma de matrícula para a cidade {city}.")
 
         return []

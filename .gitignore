@@ -1,5 +1,5 @@
 # hide credentials
-bot/credentials.yml
+bot/credentials*.yml
 
 # rasa cache folder
 bot/.rasa/
