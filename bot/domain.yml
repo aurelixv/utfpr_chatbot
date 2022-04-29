@@ -1,7 +1,7 @@
 version: "3.1"
 
 actions:
-  - action_hello_world
+  - action_get_schedule
 
 forms:
   enrollment_schedule_form:
@@ -43,7 +43,7 @@ responses:
     - text: "Informacoes sobre estagio: em breve"
 
   utter_ask_city:
-    - text: Qual cidade?
+    - text: Para qual cidade?
 
   utter_submit:
   - text: "All done!"
@@ -84,4 +84,4 @@ responses:
 
 session_config:
   session_expiration_time: 60
-  carry_over_slots_to_new_session: true
+  carry_over_slots_to_new_session: false
