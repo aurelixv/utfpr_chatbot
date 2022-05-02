@@ -3,13 +3,14 @@
 #### Autor:  Aurélio Vinícius Cabral Funes
 
 #### Tecnologias Utilizadas:
-- Rasa NLU
-- Rasa Core
+- Rasa Open Source
+- Rasa Actions Server
 - Python
 - Git
 - ngrok
 - Docker
-- Heroku 
+- Heroku
+- Postgres
 
 #### Iniciar venv:
 ```shell
@@ -21,9 +22,24 @@ source ./venv/bin/activate
 make train
 ```
 
-#### Subir ambiente:
+#### Subir o bot:
 ```shell
 make run
+```
+
+#### Subir o actions server:
+```shell
+make actions
+```
+
+#### Build da aplicação com Docker:
+```shell
+make build-bot
+```
+
+#### Deploy da aplicação no Heroku:
+```shell
+make build-bot
 ```
 
 #### Deploy local conectando ao telegram:
@@ -34,5 +50,13 @@ ngrok http 5005
 
 #### Para inicializar o postgres do terminal:
 ```shell
-heroku pg:psql postgresql-asymmetrical-62638 --app utfpr-chatbot
+heroku pg:psql -a utfpr-chatbot
+```
+
+#### Para criar as bases no postgres do terminal:
+```shell
+heroku pg:psql -a utfpr-chatbot
+\i postgres/DDL/CAMPI.sql
+\i postgres/DDL/PHASE.sql
+\i postgres/DDL/ENROLLMENT_SCHEDULE.sql
 ```

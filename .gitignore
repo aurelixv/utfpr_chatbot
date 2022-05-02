@@ -1,5 +1,6 @@
 # hide credentials
 bot/credentials*.yml
+bot/endpoints.yml
 
 # rasa cache folder
 bot/.rasa/
@@ -15,3 +16,6 @@ bot/actions/__pycache__/
 
 # python venv
 venv/
+
+# playground (local tests)
+playground

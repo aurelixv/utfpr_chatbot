@@ -20,3 +20,5 @@ ngrok:
 	ngrok http 5005
 clear:
 	rm -r bot/.rasa
+psql:
+	heroku pg:psql -a utfpr-chatbot
