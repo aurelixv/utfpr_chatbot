@@ -69,3 +69,9 @@ git update-index --skip-worktree <file>
 # voltar
 git update-index --no-skip-worktree <file>
 ```
+
+#### Git remover commits antigos em arquivos (credenciais):
+```shell
+git filter-branch --index-filter \                
+    'git rm -rf --cached --ignore-unmatch <file>' HEAD
+```
