@@ -1,0 +1,12 @@
+# different endpoints the bot can use.
+tracker_store:
+    type: SQL
+    dialect: "postgresql"
+    url: "ec2-44-194-4-127.compute-1.amazonaws.com"
+    db: "<database>"
+    username: "<username>"
+    password: "<password>"
+    port: 5432
+
+action_endpoint:
+ url: "http://localhost:5055/webhook"
