@@ -60,3 +60,12 @@ heroku pg:psql -a utfpr-chatbot
 \i postgres/DDL/PHASE.sql
 \i postgres/DDL/ENROLLMENT_SCHEDULE.sql
 ```
+
+#### Git ignorar alteraçōes nos arquivos:
+```shell
+# parar
+git update-index --skip-worktree <file>
+
+# voltar
+git update-index --no-skip-worktree <file>
+```
