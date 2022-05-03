@@ -8,6 +8,43 @@ from rasa_sdk.events import SlotSet
 import yaml
 from yaml.loader import SafeLoader
 from unidecode import unidecode
+import psycopg2
+
+def psql_connect():
+    """
+    Establishes a connection to postgres
+    """
+    try:
+        # read credentials
+        with open('endpoints.yml', encoding='utf-8') as file:
+            endpoints = yaml.load(file, Loader=SafeLoader)
+
+        # parse credentials
+        credentials = endpoints['tracker_store']
+        host = credentials['url']
+        database = credentials['db']
+        user = credentials['username']
+        password = credentials['password']
+
+        try:
+            conn = psycopg2.connect(
+                host=host,
+                database=database,
+                user=user,
+                password=password
+            )
+
+            print('--- Connection to Postgres established successfully ---')
+
+            return conn
+        except psycopg2.OperationalError:
+            return None
+
+    except OSError:
+        return None
+
+# starts postgres connection
+CONN = psql_connect()
 
 class ActionGetSchedule(Action):
     """
@@ -21,33 +58,64 @@ class ActionGetSchedule(Action):
         """
         Function that receives a city (key), pre-processes it and returns its values
         """
-        # read the schedules file
-        try:
-            with open('data/enrollment_schedule.yml', encoding='latin1') as file:
-                schedules = yaml.load(file, Loader=SafeLoader)
-        except OSError:
-            return None
+        if CONN:
+            # pre-process the city parameter
+            city = unidecode(city.upper())
 
-        # pre-process the city parameter
-        city = unidecode(city.lower())
+            # query the data
+            query = """
+            SELECT B.CAMPUS_NAME,
+                C.PHASE_NAME,
+                A.YEAR,
+                A.SEMESTER,
+                A.START_TIMESTAMP,
+                A.END_TIMESTAMP
+            FROM ENROLLMENT_SCHEDULE A
+            LEFT JOIN CAMPI B
+                ON A.CAMPUS_ID = B.CAMPUS_ID
+            LEFT JOIN PHASE C
+                ON A.PHASE_ID = C.PHASE_ID
+            WHERE B.CAMPUS_NAME = (%s)
+                AND CONCAT(A.YEAR, A.SEMESTER) = 
+                    (
+                        SELECT CONCAT(A.YEAR, A.SEMESTER) 
+                        FROM ENROLLMENT_SCHEDULE 
+                        ORDER BY YEAR DESC, SEMESTER DESC 
+                        LIMIT 1
+                    )
+            """
+            with CONN.cursor() as cur:
+                cur.execute(query, (city,))
+                data = cur.fetchall()
 
-        # query the data
-        try:
-            return (schedules['year'], schedules['semester'], schedules[city])
-        except KeyError:
-            return None
+            if len(data) > 0:
+                schedule = {
+                    'city': data[0][0].title(),
+                    'year': data[0][2],
+                    'semester': data[0][3]
+                }
+                for line in data:
+                    schedule[line[1].lower()] = {
+                        'start_date': line[4].strftime("%d/%m/%Y"), 
+                        'start_hour': line[4].strftime("%H"),
+                        'end_date': line[5].strftime("%d/%m/%Y"),
+                        'end_hour': line[5].strftime("%H")
+                    }
+                return schedule
+
+        return None
 
     async def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
         city = tracker.get_slot('city')
-        year, semester, schedule = self.get_schedule(city) or (None, None, None)
+        schedule = self.get_schedule(city)
 
-        if year and semester and schedule:
-            dispatcher.utter_message(text=f"Matrícula de veteranos do {semester}o semestre de {year} para a cidade {city}:\n\n" \
-                + f"- Início: {schedule['data_inicio']} a partir das {schedule['hora_inicio']} horas.\n" \
-                + f"- Término: {schedule['data_termino']} até às {schedule['hora_termino']} horas.")
+        if schedule:
+            dispatcher.utter_message(text=f"Matrícula de veteranos do {schedule['semester']}o semestre de {schedule['year']} para a cidade {schedule['city']}:\n\n" \
+                + f"- Início: {schedule['requerimento']['start_date']} a partir das {schedule['requerimento']['start_hour']} horas.\n" \
+                + f"- Término: {schedule['requerimento']['end_date']} até às {schedule['requerimento']['end_hour']} horas.")
         else:
             dispatcher.utter_message(text=f"Me desculpe, mas não consegui localizar o cronograma de matrícula para a cidade {city}.")
 
