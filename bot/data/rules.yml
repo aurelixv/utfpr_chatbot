@@ -28,6 +28,15 @@ rules:
     steps:
       - action: enrollment_schedule_form      # run the form
       - active_loop: null            # the form is no longer active because it has been filled
-      # - action: utter_submit         # action to take after the form is complete
-      # - action: utter_slots_values   # action to take after the form is complete
       - action: action_get_schedule
+      - action: utter_did_that_help
+
+  - rule: it did help
+    steps:
+      - intent: affirm
+      - action: utter_happy
+
+  - rule: it didn't help
+    steps:
+      - intent: deny
+      - action: utter_sad

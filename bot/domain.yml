@@ -6,23 +6,25 @@ actions:
 forms:
   enrollment_schedule_form:
     required_slots:
-        - city
+        - campus
 
 entities:
-  - city
+  - campus
 slots:
-  city:
+  campus:
     type: text
     mappings:
     - type: from_entity
-      entity: city
+      entity: campus
 
 intents:
   - start
   - chitchat
   - faq
   - enrollment_schedule
-  - inform
+  - inform_campus
+  - affirm
+  - deny
 
 responses:
   utter_start:
@@ -31,32 +33,33 @@ responses:
         title: Estágio
       - payload: /site
         title: Site
-      text: Olá, sou o bot, muito prazer! Como posso ajudar?
+      text: Olá! Eu sou o assistente virtual da UTFPR, como posso lhe ajudar?
 
   utter_chitchat/greet:
-    - text: Ola!
+    - text: Olá! Eu sou o assistente virtual da UTFPR, como posso lhe ajudar?
 
   utter_chitchat/goodbye:
-    - text: Tchau!
+    - text: "Tchau!"
+    - text: "Foi bom conversar com você!"
+    - text: "Até a próxima!"
+    - text: "Nos vemos no futuro..."
 
   utter_faq/estagio:
     - text: "Informacoes sobre estagio: em breve"
 
-  utter_ask_city:
-    - text: Para qual cidade?
+  utter_ask_campus:
+    - text: Para qual campus?
 
-  utter_submit:
-  - text: "All done!"
+  utter_did_that_help:
+    - text: Isso ajudou você?
+    - text: Consegui te ajudar?
 
-  utter_slots_values:
-  - text: "Cronograma de matricula do campus:\n
-            - cidade: {city}"
+  utter_happy:
+    - text: Fico feliz em ajudar!
+    - text: Que bom!
 
-  # utter_boas_vindas:
-  #   - text: "Olá, eu sou o bot, como posso ajudar?"
-
-  # utter_despedida:
-  #   - text: "Foi bom conversar com você!"
+  utter_sad:
+    - text: Que pena... vou deixar anotado e incluir na próxima melhoria do sistema.
 
   # utter_greet:
   # - buttons:
@@ -70,11 +73,7 @@ responses:
   # - text: "Algo pra te alegrar:"
   #   image: "https://i.imgur.com/nGF1K8f.jpg"
 
-  # utter_did_that_help:
-  # - text: "Isso ajudou você?"
 
-  # utter_happy:
-  # - text: "Legal!"
 
   # utter_goodbye:
   # - text: "Tchau!"

@@ -54,13 +54,13 @@ class ActionGetSchedule(Action):
         return "action_get_schedule"
 
     @staticmethod
-    def get_schedule(city: Text) -> Dict:
+    def get_schedule(campus: Text) -> Dict:
         """
-        Function that receives a city (key), pre-processes it and returns its values
+        Function that receives a campus (key), pre-processes it and returns its values
         """
         if CONN:
-            # pre-process the city parameter
-            city = unidecode(city.upper())
+            # pre-process the campus parameter
+            campus = unidecode(campus.upper())
 
             # query the data
             query = """
@@ -85,17 +85,18 @@ class ActionGetSchedule(Action):
                     )
             """
             with CONN.cursor() as cur:
-                cur.execute(query, (city,))
+                cur.execute(query, (campus,))
                 data = cur.fetchall()
 
             if len(data) > 0:
                 schedule = {
-                    'city': data[0][0].title(),
+                    'campus': data[0][0].title(),
                     'year': data[0][2],
-                    'semester': data[0][3]
+                    'semester': data[0][3],
+                    'phases': {}
                 }
                 for line in data:
-                    schedule[line[1].lower()] = {
+                    schedule['phases'][line[1].lower()] = {
                         'start_date': line[4].strftime("%d/%m/%Y"), 
                         'start_hour': line[4].strftime("%H"),
                         'end_date': line[5].strftime("%d/%m/%Y"),
@@ -109,15 +110,24 @@ class ActionGetSchedule(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
-        city = tracker.get_slot('city')
-        schedule = self.get_schedule(city)
+        campus = tracker.get_slot('campus')
+        schedule = self.get_schedule(campus)
 
         if schedule:
-            dispatcher.utter_message(text=f"Matrícula de veteranos do {schedule['semester']}o semestre de {schedule['year']} para a cidade {schedule['city']}:\n\n" \
-                + f"- Início: {schedule['requerimento']['start_date']} a partir das {schedule['requerimento']['start_hour']} horas.\n" \
-                + f"- Término: {schedule['requerimento']['end_date']} até às {schedule['requerimento']['end_hour']} horas.")
-        else:
-            dispatcher.utter_message(text=f"Me desculpe, mas não consegui localizar o cronograma de matrícula para a cidade {city}.")
 
-        # clears the city slot
-        return [SlotSet('city', None)]
+            response = f"Matrícula de veteranos do {schedule['semester']}o semestre "\
+                + f"de {schedule['year']} para o campus {schedule['campus']}:\n\n"
+
+            phases = schedule['phases']
+
+            for phase in phases:
+                response += f"{phase.upper()}\n"\
+                    f"- Início: {phases[phase]['start_date']} a partir das {phases[phase]['start_hour']} horas.\n" \
+                    + f"- Término: {phases[phase]['end_date']} até às {phases[phase]['end_hour']} horas.\n\n"
+
+            dispatcher.utter_message(text=response)
+        else:
+            dispatcher.utter_message(text=f"Me desculpe, mas não consegui localizar o cronograma de matrícula de veteranos para o campus {campus.title()}.")
+
+        # clears the campus slot
+        return [SlotSet('campus', None)]

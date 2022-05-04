@@ -11,21 +11,26 @@ nlu:
     - quero o cronograma de matricula
     - matricula de veteranos
     - data da matricula
-    - qual a data da matricula para o campus [Curitiba](city)
-    - cronograma do campus [Dois Vizinhos](city)
-    - quando começa a matrícula em [medianeira](city)
+    - qual a data da matricula para o campus [Curitiba](campus)
+    - cronograma do campus [Dois Vizinhos](campus)
+    - quando começa a matrícula em [medianeira](campus)
 
-- intent: inform
+- intent: inform_campus
   examples: |
-    - campus [Curitiba](city)
-    - cidade de [medianeira](city)
-    - na universidade [Dois Vizinhos](city)
+    - campus [Curitiba](campus)
+    - cidade de [medianeira](campus)
+    - na universidade [Dois Vizinhos](campus)
+    - [Londrina](campus)
 
 - intent: chitchat/greet
   examples: |
     - oi
     - ola
+    - olá
     - alô
+    - bom dia
+    - boa tarde
+    - boa noite
 
 - intent: chitchat/goodbye
   examples: |
@@ -33,6 +38,8 @@ nlu:
     - estou indo embora
     - vou nessa
     - xau
+    - ate a proxima
+    - fui
 
 - intent: faq/estagio
   examples: |
@@ -43,7 +50,7 @@ nlu:
     - estagio nao obrigatorio
     - estagio
 
-- lookup: city
+- lookup: campus
   examples: |
     - Apucarana
     - Campo Mourão
@@ -61,24 +68,26 @@ nlu:
     - Ponta Grossa
     - Santa Helena
     - Toledo
+    - Ecoville
 
-# - intent: chitchat/affirm
-#   examples: |
-#     - sim
-#     - s
-#     - concordo
-#     - com certeza
-#     - parece bom
-#     - correto
+- intent: affirm
+  examples: |
+    - sim
+    - s
+    - yes
+    - concordo
+    - com certeza
+    - parece bom
+    - correto
 
-# - intent: chitchat/deny
-#   examples: |
-#     - não
-#     - nao
-#     - n
-#     - nunca
-#     - não concordo
-#     - sem condição
+- intent: deny
+  examples: |
+    - não
+    - nao
+    - n
+    - nunca
+    - não concordo
+    - sem condição
 
 # - intent: chitchat/mood_great
 #   examples: |
