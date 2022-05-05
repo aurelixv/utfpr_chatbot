@@ -34,9 +34,9 @@ rules:
   - rule: it did help
     steps:
       - intent: affirm
-      - action: utter_happy
+      - action: utter_positive_feedback
 
   - rule: it didn't help
     steps:
       - intent: deny
-      - action: utter_sad
+      - action: utter_negative_feedback

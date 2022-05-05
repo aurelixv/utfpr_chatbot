@@ -41,6 +41,13 @@ nlu:
     - ate a proxima
     - fui
 
+- intent: chitchat/help
+  examples: |
+    - preciso de ajuda
+    - voce pode me ajudar
+    - consegue me dar uma forca
+    - me ajude
+
 - intent: faq/estagio
   examples: |
     - informacoes sobre estagio
@@ -49,6 +56,22 @@ nlu:
     - estagio obrigatorio
     - estagio nao obrigatorio
     - estagio
+
+- intent: faq/info
+  examples: |
+    - UTFPR
+    - o que é a universidade
+    - universidade tecnologica federal do parana
+    - informacao sobre a universidade
+    - site
+    - pagina da universidade
+
+- intent: faq/portal
+  examples: |
+    - portal do aluno
+    - link para o portal
+    - site portal do aluno
+    - qual e o site do portal
 
 - lookup: campus
   examples: |

@@ -29,10 +29,13 @@ intents:
 responses:
   utter_start:
     - buttons:
-      - payload: /estagio
+      - payload: matricula
+        title: Matrícula
+      - payload: estagio
         title: Estágio
-      - payload: /site
+      - payload: site
         title: Site
+      button_type: inline
       text: Olá! Eu sou o assistente virtual da UTFPR, como posso lhe ajudar?
 
   utter_chitchat/greet:
@@ -44,7 +47,16 @@ responses:
     - text: "Até a próxima!"
     - text: "Nos vemos no futuro..."
 
+  utter_chitchat/help:
+    - text: "Tópicos que eu posso lhe ajudar:\n\n- Matrícula de Veteranos\n- Informações de estágio\n- Bolsas estudantis"
+
   utter_faq/estagio:
+    - text: "Informacoes sobre estagio: em breve"
+
+  utter_faq/info:
+    - text: "A Universidade Tecnológica Federal do Paraná (UTFPR) possui 13 câmpus no estado do Paraná, totalizando 2549 professores, 1176 técnicos administrativos e mais de 32 mil estudantes.\n\nSaiba mais em: https://portal.utfpr.edu.br/institucional/sobre-a-utfpr-1"
+
+  utter_faq/portal:
     - text: "Informacoes sobre estagio: em breve"
 
   utter_ask_campus:
@@ -54,11 +66,11 @@ responses:
     - text: Isso ajudou você?
     - text: Consegui te ajudar?
 
-  utter_happy:
+  utter_positive_feedback:
     - text: Fico feliz em ajudar!
     - text: Que bom!
 
-  utter_sad:
+  utter_negative_feedback:
     - text: Que pena... vou deixar anotado e incluir na próxima melhoria do sistema.
 
   # utter_greet:
