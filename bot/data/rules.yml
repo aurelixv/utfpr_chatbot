@@ -11,6 +11,12 @@ rules:
     - intent: faq
     - action: utter_faq
 
+  - rule: respond to internship info
+    steps:
+    - intent: internship
+    - action: utter_internship
+    - action: action_inform_internship
+
   - rule: respond to chitchat
     steps:
     - intent: chitchat
@@ -22,7 +28,7 @@ rules:
       - action: enrollment_schedule_form      # run the form
       - active_loop: enrollment_schedule_form # this form is active
 
-  - rule: submit form
+  - rule: submit enrollment_schedule form
     condition:
     - active_loop: enrollment_schedule_form   # this form must be active
     steps:

@@ -22,12 +22,24 @@ nlu:
     - na universidade [Dois Vizinhos](campus)
     - [Londrina](campus)
 
+- intent: internship/info
+  examples: |
+    - informacoes sobre estágio
+    - quero saber sobre estagio
+    - como funciona o estagio [obrigatorio](internship_type)
+    - como funciona o estagio [obrigatório](internship_type)
+    - onde encontro estagio [não obrigatório](internship_type)
+    - estagio [nao obrigatorio](internship_type)
+
 - intent: chitchat/greet
   examples: |
     - oi
     - ola
+    - opa
     - olá
     - alô
+    - alou
+    - hello
     - bom dia
     - boa tarde
     - boa noite
@@ -48,14 +60,28 @@ nlu:
     - consegue me dar uma forca
     - me ajude
 
-- intent: faq/estagio
+- intent: chitchat/thank
   examples: |
-    - informacoes sobre estagio
-    - quero saber sobre estagio
-    - onde encontro estagio
-    - estagio obrigatorio
-    - estagio nao obrigatorio
-    - estagio
+    - obrigado
+    - muito obrigado
+    - valeu
+    - show
+    - me ajudou bastante
+    - foi muito util
+
+- intent: chitchat/fun_fact
+  examples: |
+    - curiosidade
+    - me conte algo diferente
+    - voce sabia
+    - quero algo interessante
+
+- intent: chitchat/joke
+  examples: |
+    - piada
+    - me conte uma piada
+    - quero dar risada
+    - algo engraçado
 
 - intent: faq/info
   examples: |

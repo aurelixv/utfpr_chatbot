@@ -34,17 +34,12 @@ def psql_connect():
                 password=password
             )
 
-            print('--- Connection to Postgres established successfully ---')
-
             return conn
         except psycopg2.OperationalError:
             return None
 
     except OSError:
         return None
-
-# starts postgres connection
-CONN = psql_connect()
 
 class ActionGetSchedule(Action):
     """
@@ -58,13 +53,10 @@ class ActionGetSchedule(Action):
         """
         Function that receives a campus (key), pre-processes it and returns its values
         """
-        global CONN
-        # connects to db if expired
-        if CONN.closed != 0:
-            print('--- Reconnecting to Postgres... ---')
-            CONN = psql_connect()
+        # connects to db
+        conn = psql_connect()
 
-        if CONN.closed == 0:
+        if conn:
             # pre-process the campus parameter
             campus = unidecode(campus.upper())
 
@@ -93,7 +85,7 @@ class ActionGetSchedule(Action):
                     AND A.YEAR = (%s)
                     AND A.SEMESTER = (%s)
             """
-            with CONN.cursor() as cur:
+            with conn.cursor() as cur:
                 cur.execute(q_year_semester, (campus,))
                 year_semester = cur.fetchall()
                 if len(year_semester) > 0:
@@ -102,7 +94,10 @@ class ActionGetSchedule(Action):
                     cur.execute(q_schedule, (campus, year, semester))
                     data = cur.fetchall()
                 else:
-                    return None
+                    data = []
+
+            # close the connection to db
+            conn.close()
 
             if len(data) > 0:
                 schedule = {
@@ -150,3 +145,21 @@ class ActionGetSchedule(Action):
 
         # clears the campus slot
         return [SlotSet('campus', None)]
+
+class ActionInformInternship(Action):
+    """
+    Handles the action_inform_internship action
+    """
+    def name(self) -> Text:
+        return "action_inform_internship"
+
+    async def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+        internship_type = tracker.get_slot('internship_type')
+
+        dispatcher.utter_message(text=f'Informações sobre {internship_type}...')
+
+        # clears the campus slot
+        return [SlotSet('internship_type', None)]

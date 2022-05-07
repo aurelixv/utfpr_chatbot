@@ -2,20 +2,33 @@ version: "3.1"
 
 actions:
   - action_get_schedule
+  - action_inform_internship
 
 forms:
   enrollment_schedule_form:
     required_slots:
         - campus
 
+  internship_form:
+    required_slots:
+        - internship_type
+
 entities:
   - campus
+  - internship_type
+
 slots:
   campus:
     type: text
     mappings:
     - type: from_entity
       entity: campus
+
+  internship_type:
+    type: text
+    mappings:
+      - type: from_entity
+        entity: internship_type
 
 intents:
   - start
@@ -25,6 +38,7 @@ intents:
   - inform_campus
   - affirm
   - deny
+  - internship
 
 responses:
   utter_start:
@@ -35,6 +49,8 @@ responses:
         title: Estágio
       - payload: site
         title: Site
+      - payload: portal
+        title: Portal
       button_type: inline
       text: Olá! Eu sou o assistente virtual da UTFPR, como posso lhe ajudar?
 
@@ -50,13 +66,24 @@ responses:
   utter_chitchat/help:
     - text: "Tópicos que eu posso lhe ajudar:\n\n- Matrícula de Veteranos\n- Informações de estágio\n- Bolsas estudantis"
 
-  utter_faq/estagio:
-    - text: "Informacoes sobre estagio: em breve"
+  utter_chitchat/thank:
+      - text: Por nada!
+      - text: Estou à disposição...
+      - text: Às suas ordens.
+
+  utter_chitchat/fun_fact:
+      - text: Você sabia que...
+
+  utter_chitchat/joke:
+      - text: Piada
 
   utter_faq/info:
     - text: "A Universidade Tecnológica Federal do Paraná (UTFPR) possui 13 câmpus no estado do Paraná, totalizando 2549 professores, 1176 técnicos administrativos e mais de 32 mil estudantes.\n\nSaiba mais em: https://portal.utfpr.edu.br/institucional/sobre-a-utfpr-1"
 
   utter_faq/portal:
+    - text: "Portal do aluno"
+
+  utter_internship/info:
     - text: "Informacoes sobre estagio: em breve"
 
   utter_ask_campus:
@@ -65,6 +92,7 @@ responses:
   utter_did_that_help:
     - text: Isso ajudou você?
     - text: Consegui te ajudar?
+    - text: Isso foi útil?
 
   utter_positive_feedback:
     - text: Fico feliz em ajudar!
