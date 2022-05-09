@@ -1,0 +1,13 @@
+INTERNSHIP_INFO_ID;INTERNSHIP_TYPE_ID;UPDATE_TIMESTAMP;INFO_TEXT
+1;1;2022-05-08 09:00:00;Informaç?es sobre estágio obrigatório...
+2;1;2022-05-08 09:00:00;A diferença entre o estágio obrigatório e não obrigatório é...
+3;1;2022-05-08 09:00:00;A documentação necessária para o estágio obrigatório é:\n\nDocumento 1\nDocumento 2
+4;1;2022-05-08 09:00:00;
+5;1;2022-05-08 09:00:00;
+6;1;2022-05-08 09:00:00;
+1;2;2022-05-08 09:00:00;Informaç?es sobre estágio não obrigatório...
+2;2;2022-05-08 09:00:00;A diferença entre o estágio obrigatório e não obrigatório é...
+3;2;2022-05-08 09:00:00;A documentação necessária para o estágio não obrigatório é:\n\nDocumento 1\nDocumento 2
+4;2;2022-05-08 09:00:00;
+5;2;2022-05-08 09:00:00;
+6;2;2022-05-08 09:00:00;

@@ -1,7 +1,0 @@
--- enrollment schedule DDL
-CREATE TABLE PHASE (
-    PHASE_ID INT,
-    PHASE_NAME VARCHAR(100),
-    INFO VARCHAR(100),
-    PRIMARY KEY (PHASE_ID)
-);

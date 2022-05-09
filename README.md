@@ -7,10 +7,10 @@
 - Rasa Actions Server
 - Python
 - Git
-- ngrok
 - Docker
 - Heroku
 - Postgres
+- ngrok
 
 #### Iniciar venv:
 ```shell

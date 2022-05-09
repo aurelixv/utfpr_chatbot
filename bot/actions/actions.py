@@ -9,6 +9,7 @@ import yaml
 from yaml.loader import SafeLoader
 from unidecode import unidecode
 import psycopg2
+from pprint import pprint
 
 def psql_connect():
     """
@@ -65,7 +66,7 @@ class ActionGetSchedule(Action):
                 SELECT A.YEAR,
                     A.SEMESTER
                 FROM ENROLLMENT_SCHEDULE A
-                LEFT JOIN CAMPI B
+                LEFT JOIN CAMPUS B
                     ON A.CAMPUS_ID = B.CAMPUS_ID
                 WHERE B.CAMPUS_NAME = (%s)
                 ORDER BY YEAR DESC, SEMESTER DESC 
@@ -73,14 +74,14 @@ class ActionGetSchedule(Action):
             """
             q_schedule = """
                 SELECT B.CAMPUS_NAME,
-                    C.PHASE_NAME,
+                    C.ENROLLMENT_PHASE_NAME,
                     A.START_TIMESTAMP,
                     A.END_TIMESTAMP
                 FROM ENROLLMENT_SCHEDULE A
-                LEFT JOIN CAMPI B
+                LEFT JOIN CAMPUS B
                     ON A.CAMPUS_ID = B.CAMPUS_ID
-                LEFT JOIN PHASE C
-                    ON A.PHASE_ID = C.PHASE_ID
+                LEFT JOIN ENROLLMENT_PHASE C
+                    ON A.ENROLLMENT_PHASE_ID = C.ENROLLMENT_PHASE_ID
                 WHERE B.CAMPUS_NAME = (%s)
                     AND A.YEAR = (%s)
                     AND A.SEMESTER = (%s)
@@ -153,13 +154,28 @@ class ActionInformInternship(Action):
     def name(self) -> Text:
         return "action_inform_internship"
 
+    @staticmethod
+    def get_intent_response_key(tracker):
+        """
+        Function that receives a tracker object and returns the intent_response_key
+        """
+        intent_response_key =  tracker.latest_message['response_selector']\
+            ['default']['response']['intent_response_key']
+
+        if intent_response_key:
+            return intent_response_key.split('/')[1]
+
+        return None
+
     async def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
         internship_type = tracker.get_slot('internship_type')
 
-        dispatcher.utter_message(text=f'Informações sobre {internship_type}...')
+        intent = self.get_intent_response_key(tracker)
+
+        dispatcher.utter_message(text=f'Intent: {intent} Informações sobre {internship_type}...')
 
         # clears the campus slot
         return [SlotSet('internship_type', None)]
