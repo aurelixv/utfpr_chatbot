@@ -9,7 +9,6 @@ import yaml
 from yaml.loader import SafeLoader
 from unidecode import unidecode
 import psycopg2
-from pprint import pprint
 
 def psql_connect():
     """

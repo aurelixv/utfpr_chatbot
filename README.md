@@ -10,7 +10,6 @@
 - Docker
 - Heroku
 - Postgres
-- ngrok
 
 #### Iniciar venv:
 ```shell
@@ -34,12 +33,17 @@ make actions
 
 #### Build da aplicação com Docker:
 ```shell
-make build-bot
+make build
 ```
 
 #### Deploy da aplicação no Heroku:
 ```shell
-make build-bot
+make deploy
+```
+
+#### Release da aplicação no Heroku:
+```shell
+make release
 ```
 
 #### Deploy local conectando ao telegram:
