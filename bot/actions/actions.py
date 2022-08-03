@@ -126,7 +126,7 @@ class ActionGetSchedule(Action):
 
         if schedule:
 
-            response = f"Matrícula de veteranos do {schedule['semester']}o semestre "\
+            response = f"Matrícula de veteranos do {schedule['semester']}.º semestre "\
                 f"de {schedule['year']} para o campus {schedule['campus']}:\n\n"
 
             phases = schedule['phases']
@@ -176,5 +176,5 @@ class ActionInformInternship(Action):
 
         dispatcher.utter_message(text=f'Intent: {intent} Informações sobre {internship_type}...')
 
-        # clears the campus slot
+        # clears the internship_type slot
         return [SlotSet('internship_type', None)]

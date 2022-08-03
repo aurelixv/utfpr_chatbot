@@ -5,6 +5,28 @@ nlu:
   examples: |
     - /start
     - start
+    - oi
+    - ola
+    - opa
+    - olá
+    - alô
+    - alou
+    - hello
+    - bom dia
+    - boa tarde
+    - boa noite
+    - preciso de ajuda
+    - voce pode me ajudar
+    - consegue me dar uma forca
+    - me ajude
+    - me ajuda
+    - help
+
+- intent: cancel
+  examples: |
+    - cancelar
+    - abortar
+    - parar
 
 - intent: enrollment_schedule
   examples: |
@@ -30,19 +52,8 @@ nlu:
     - como funciona o estagio [obrigatório](internship_type)
     - onde encontro estagio [não obrigatório](internship_type)
     - estagio [nao obrigatorio](internship_type)
-
-- intent: chitchat/greet
-  examples: |
-    - oi
-    - ola
-    - opa
-    - olá
-    - alô
-    - alou
-    - hello
-    - bom dia
-    - boa tarde
-    - boa noite
+    - [nao obrigatorio](internship_type)
+    - [obrigatorio](internship_type)
 
 - intent: chitchat/goodbye
   examples: |
@@ -52,13 +63,6 @@ nlu:
     - xau
     - ate a proxima
     - fui
-
-- intent: chitchat/help
-  examples: |
-    - preciso de ajuda
-    - voce pode me ajudar
-    - consegue me dar uma forca
-    - me ajude
 
 - intent: chitchat/thank
   examples: |

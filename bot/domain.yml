@@ -32,6 +32,7 @@ slots:
 
 intents:
   - start
+  - cancel
   - chitchat
   - faq
   - enrollment_schedule
@@ -44,27 +45,24 @@ responses:
   utter_start:
     - buttons:
       - payload: matricula
-        title: Matrícula
+        title: Cronograma de Matrícula
       - payload: estagio
-        title: Estágio
+        title: Informaçōes de Estágio
       - payload: site
-        title: Site
+        title: Site da Instituição
       - payload: portal
-        title: Portal
-      button_type: inline
+        title: Portal do Aluno
+      button_type: vertical
       text: Olá! Eu sou o assistente virtual da UTFPR, como posso lhe ajudar?
 
-  utter_chitchat/greet:
-    - text: Olá! Eu sou o assistente virtual da UTFPR, como posso lhe ajudar?
+  utter_cancel:
+    - text: Cancelando...
 
   utter_chitchat/goodbye:
-    - text: "Tchau!"
-    - text: "Foi bom conversar com você!"
-    - text: "Até a próxima!"
-    - text: "Nos vemos no futuro..."
-
-  utter_chitchat/help:
-    - text: "Tópicos que eu posso lhe ajudar:\n\n- Matrícula de Veteranos\n- Informações de estágio\n- Bolsas estudantis"
+    - text: Tchau!
+    - text: Foi bom conversar com você!
+    - text: Até a próxima!
+    - text: Nos vemos no futuro...
 
   utter_chitchat/thank:
       - text: Por nada!
@@ -81,7 +79,7 @@ responses:
     - text: "A Universidade Tecnológica Federal do Paraná (UTFPR) possui 13 câmpus no estado do Paraná, totalizando 2549 professores, 1176 técnicos administrativos e mais de 32 mil estudantes.\n\nSaiba mais em: https://portal.utfpr.edu.br/institucional/sobre-a-utfpr-1"
 
   utter_faq/portal:
-    - text: "Portal do aluno"
+    - text: Portal do aluno
 
   utter_internship/info:
     - text: "Informacoes sobre estagio: em breve"
