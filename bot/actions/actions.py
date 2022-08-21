@@ -10,35 +10,34 @@ from yaml.loader import SafeLoader
 from unidecode import unidecode
 import psycopg2
 
-def psql_connect():
+class Credentials:
+    """
+    Parses the credentials from yaml file
+    """
+    def __init__(self, file_path: str):
+        # open credentials file
+        with open(file_path, encoding='utf-8') as file:
+            endpoints = yaml.load(file, Loader=SafeLoader)
+        # parse credentials
+        credentials = endpoints['tracker_store']
+        self.host = credentials['url']
+        self.database = credentials['db']
+        self.user = credentials['username']
+        self.password = credentials['password']
+
+def psql_connect(credentials: Credentials):
     """
     Establishes a connection to postgres
     """
     try:
-        # read credentials
-        with open('endpoints.yml', encoding='utf-8') as file:
-            endpoints = yaml.load(file, Loader=SafeLoader)
-
-        # parse credentials
-        credentials = endpoints['tracker_store']
-        host = credentials['url']
-        database = credentials['db']
-        user = credentials['username']
-        password = credentials['password']
-
-        try:
-            conn = psycopg2.connect(
-                host=host,
-                database=database,
-                user=user,
-                password=password
-            )
-
-            return conn
-        except psycopg2.OperationalError:
-            return None
-
-    except OSError:
+        conn = psycopg2.connect(
+            host = credentials.host,
+            database = credentials.database,
+            user = credentials.user,
+            password = credentials.password
+        )
+        return conn
+    except psycopg2.OperationalError:
         return None
 
 class ActionGetSchedule(Action):
@@ -54,7 +53,8 @@ class ActionGetSchedule(Action):
         Function that receives a campus (key), pre-processes it and returns its values
         """
         # connects to db
-        conn = psql_connect()
+        credentials = Credentials('endpoints.yml')
+        conn = psql_connect(credentials)
 
         if conn:
             # pre-process the campus parameter
@@ -171,10 +171,11 @@ class ActionInformInternship(Action):
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
         internship_type = tracker.get_slot('internship_type')
+        internship_info = tracker.get_slot('internship_info')
 
         intent = self.get_intent_response_key(tracker)
 
-        dispatcher.utter_message(text=f'Intent: {intent} Informações sobre {internship_type}...')
+        dispatcher.utter_message(text=f'Intent: {intent} Informações sobre {internship_type}...\n Internship_info {internship_info}')
 
         # clears the internship_type slot
-        return [SlotSet('internship_type', None)]
+        return [SlotSet('internship_type', None), SlotSet('internship_info', None)]

@@ -11,11 +11,11 @@ rules:
     - intent: faq
     - action: utter_faq
 
-  - rule: respond to internship info
-    steps:
-    - intent: internship
-    - action: utter_internship
-    - action: action_inform_internship
+  # - rule: respond to internship info
+  #   steps:
+  #   - intent: internship
+  #   - action: utter_internship
+  #   - action: action_inform_internship
 
   - rule: respond to chitchat
     steps:
@@ -40,6 +40,30 @@ rules:
   - rule: cancel enrollment_schedule form
     condition:
     - active_loop: enrollment_schedule_form   # this form must be active
+    steps:
+      - intent: cancel # cancelar o form
+      - action: utter_cancel
+      - action: action_deactivate_loop
+      - active_loop: null
+
+  - rule: activate internship form
+    steps:
+      - intent: internship   # intent that triggers form activation
+      - action: internship_form      # run the form
+      - active_loop: internship_form # this form is active
+
+  - rule: submit internship form
+    condition:
+    - active_loop: internship_form   # this form must be active
+    steps:
+      - action: internship_form      # run the form
+      - active_loop: null            # the form is no longer active because it has been filled
+      - action: action_inform_internship
+      - action: utter_did_that_help
+
+  - rule: cancel internship form
+    condition:
+    - active_loop: internship_form   # this form must be active
     steps:
       - intent: cancel # cancelar o form
       - action: utter_cancel

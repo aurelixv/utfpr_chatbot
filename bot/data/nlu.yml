@@ -46,7 +46,7 @@ nlu:
 
 - intent: internship/info
   examples: |
-    - informacoes sobre estágio
+    - [informacoes](internship_info) sobre estágio
     - quero saber sobre estagio
     - como funciona o estagio [obrigatorio](internship_type)
     - como funciona o estagio [obrigatório](internship_type)
@@ -54,6 +54,11 @@ nlu:
     - estagio [nao obrigatorio](internship_type)
     - [nao obrigatorio](internship_type)
     - [obrigatorio](internship_type)
+    - [diferenca](internship_info) entre estagio
+    - [documentacao](internship_info) necessaria para estagio
+    - [relatorio](internship_info) de estagio
+    - alterar o meu [horario](internship_info) de estagio
+    - [contato](internship_info) para estagio
 
 - intent: chitchat/goodbye
   examples: |
@@ -122,6 +127,15 @@ nlu:
     - Santa Helena
     - Toledo
     - Ecoville
+
+- lookup: internship_info
+  examples: |
+    - Informacoes Gerais
+    - Diferenca
+    - Documentacao
+    - Relatorios
+    - Alterar horario
+    - Mais informacoes contatos
 
 - intent: affirm
   examples: |

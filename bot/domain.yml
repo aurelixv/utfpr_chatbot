@@ -11,11 +11,12 @@ forms:
 
   internship_form:
     required_slots:
-        - internship_type
+        - internship_info
 
 entities:
   - campus
   - internship_type
+  - internship_info
 
 slots:
   campus:
@@ -30,6 +31,12 @@ slots:
       - type: from_entity
         entity: internship_type
 
+  internship_info:
+    type: text
+    mappings:
+      - type: from_entity
+        entity: internship_info
+
 intents:
   - start
   - cancel
@@ -40,6 +47,7 @@ intents:
   - affirm
   - deny
   - internship
+  - inform_internship_info
 
 responses:
   utter_start:
@@ -86,6 +94,23 @@ responses:
 
   utter_ask_campus:
     - text: Para qual campus?
+
+  utter_ask_internship_info:
+    - buttons:
+      - payload: Informacoes Gerais
+        title: Informações Gerais
+      - payload: Diferenca
+        title: Obrigatório vs Não Obrigatório
+      - payload: Documentacao
+        title: Documentação
+      - payload: Relatorios
+        title: Relatórios
+      - payload: Alterar horario
+        title: Alterar horário
+      - payload: Mais informacoes contatos
+        title: Mais informações/Contatos
+      button_type: vertical
+      text: O que deseja saber sobre estágio?
 
   utter_did_that_help:
     - text: Isso ajudou você?
