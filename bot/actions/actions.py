@@ -173,9 +173,14 @@ class ActionInformInternship(Action):
         internship_type = tracker.get_slot('internship_type')
         internship_info = tracker.get_slot('internship_info')
 
+        # pre-process the parameters
+        # internship_type = unidecode(internship_type.upper())
+        internship_info = unidecode(internship_info.upper())
+
         intent = self.get_intent_response_key(tracker)
 
-        dispatcher.utter_message(text=f'Intent: {intent} Informações sobre {internship_type}...\n Internship_info {internship_info}')
+        dispatcher.utter_message(text=f'Intent: {intent} Informações sobre {internship_type}...'\
+            + f'\n Internship_info {internship_info}')
 
         # clears the internship_type slot
         return [SlotSet('internship_type', None), SlotSet('internship_info', None)]

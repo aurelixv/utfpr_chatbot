@@ -44,7 +44,7 @@ nlu:
     - na universidade [Dois Vizinhos](campus)
     - [Londrina](campus)
 
-- intent: internship/info
+- intent: internship
   examples: |
     - [informacoes](internship_info) sobre estágio
     - quero saber sobre estagio
@@ -59,6 +59,15 @@ nlu:
     - [relatorio](internship_info) de estagio
     - alterar o meu [horario](internship_info) de estagio
     - [contato](internship_info) para estagio
+
+- intent: inform_internship_info
+  examples: |
+    - [Informacoes Gerais](internship_info)
+    - [Diferenca](internship_info)
+    - [Documentacao](internship_info)
+    - [Relatorios](internship_info)
+    - [Alterar horario](internship_info)
+    - [Mais informacoes contatos](internship_info)
 
 - intent: chitchat/goodbye
   examples: |
