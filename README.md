@@ -8,12 +8,23 @@
 - Python
 - Git
 - Docker
-- Heroku
+- Docker Compose
+<!-- - Heroku -->
 - Postgres
 
-#### Iniciar venv:
+#### Criar imagem docker do rasa server:
 ```shell
-source ./venv/bin/activate
+make build-rasa
+```
+
+#### Criar imagem docker do actions server:
+```shell
+make build-actions
+```
+
+#### Criar imagem docker do postgres:
+```shell
+make build-postgres
 ```
 
 #### Treinar modelo:
@@ -26,14 +37,9 @@ make train
 make run
 ```
 
-#### Subir o actions server:
+#### Subir versão limpa:
 ```shell
-make actions
-```
-
-#### Build da aplicação com Docker:
-```shell
-make build
+make clean
 ```
 
 #### Deploy da aplicação no Heroku:
@@ -57,11 +63,10 @@ make ngrok
 heroku pg:psql -a utfpr-chatbot
 ```
 
-#### Para criar as bases no postgres do terminal (**DDL**):
+#### Para criar as bases no postgres (**DDL**):
 ```shell
-\i postgres/DDL/CAMPI.sql
-\i postgres/DDL/PHASE.sql
-\i postgres/DDL/ENROLLMENT_SCHEDULE.sql
+# Utilizar códigos .sql para criar as tabelas, presentes em /postgres/DDL 
+# Durante o build da imagem do postgres, os códigos e a carga são chamados pelo script /postgres/ingestion.sh
 ```
 
 #### Para preencher as bases criadas (**DML**):

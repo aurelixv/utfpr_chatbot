@@ -1,0 +1,35 @@
+name: utfpr_chatbot
+services:
+  rasa_server:
+    container_name: rasa_server
+    image: aurelixv/rasa_server:latest
+    networks: ['utfpr_chatbot']
+    command: run -vv --model models/nlu_utfpr_chatbot.tar.gz --credentials credentials_dev.yml -p 5005
+    ports:
+      - 5005:5005
+    working_dir: /app
+    volumes:
+      - ./bot:/app
+  rasa_actions:
+    container_name: rasa_actions
+    image: aurelixv/rasa_actions:latest
+    networks: ['utfpr_chatbot']
+    command: start -vv -p 5055 --actions actions
+    ports:
+      - 5055:5055
+    volumes:
+      - ./bot/actions:/app/actions
+      - ./bot/endpoints.yml:/app/endpoints.yml
+  postgres:
+    container_name: postgres
+    image: aurelixv/postgres:latest
+    networks: ['utfpr_chatbot']
+    restart: always
+    environment:
+      POSTGRES_USER: "utfpr_chatbot"
+      POSTGRES_PASSWORD: "utfpr_chatbot"
+    volumes:
+      - ./postgres/ingestion.sh:/docker-entrypoint-initdb.d/ingestion.sh
+    ports:
+      - 5432:5432
+networks: {utfpr_chatbot: {}}

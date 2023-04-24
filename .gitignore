@@ -3,6 +3,8 @@ bot/credentials_dev.yml
 
 # rasa cache folder
 bot/.rasa/
+bot/.keras/
+bot/.config/rasa/
 
 # vscode temp files
 .vscode/
