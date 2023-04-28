@@ -1,0 +1,8 @@
+version: "2"
+authtoken: <token>
+
+tunnels:
+  rasa_server:
+    proto: http
+    addr: rasa_server:5005
+    hostname:

@@ -11,6 +11,7 @@ services:
       postgres:
         condition: service_healthy
     networks: ['net_utfpr_chatbot']
+    restart: no
     command: run -vv --model models/nlu_utfpr_chatbot.tar.gz --credentials credentials_dev.yml -p 5005
     working_dir: /app
     volumes:
@@ -25,6 +26,7 @@ services:
       postgres:
         condition: service_healthy
     networks: ['net_utfpr_chatbot']
+    restart: unless-stopped
     command: start -vv -p 5055 --actions actions
     volumes:
       - ./bot/actions:/app/actions
