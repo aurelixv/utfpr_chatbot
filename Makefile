@@ -7,16 +7,16 @@ clean:
 		docker compose build --no-cache && \
 		docker compose up
 build-server:
-	cd rasa_server/ && \
-		docker build -t aurelixv/rasa_server . && \
+	cd docker/ && \
+		docker build -f rasa_server.Dockerfile -t aurelixv/rasa_server . && \
 		docker push aurelixv/rasa_server:latest
 build-actions:
-	cd rasa_actions/ && \
-		docker build -t aurelixv/rasa_actions . && \
+	cd docker/ && \
+		docker build -f rasa_actions.Dockerfile -t aurelixv/rasa_actions . && \
 		docker push aurelixv/rasa_actions:latest
 build-postgres:
-	cd postgres/ && \
-	docker build -t aurelixv/postgres . && \
+	cd docker/ && \
+	docker build -f postgres.Dockerfile -t aurelixv/postgres . && \
 	docker push aurelixv/postgres:latest
 deploy:
 	heroku container:login && \

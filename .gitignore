@@ -4,7 +4,7 @@ bot/credentials_dev.yml
 # rasa cache folder
 bot/.rasa/
 bot/.keras/
-bot/.config/rasa/
+bot/.config/
 
 # vscode temp files
 .vscode/
@@ -14,6 +14,7 @@ bot/models/*
 
 # python cache
 bot/actions/__pycache__/
+bot/actions/__init__.py
 
 # python venv
 venv/
