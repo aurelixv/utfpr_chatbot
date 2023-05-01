@@ -12,6 +12,16 @@
 <!-- - Heroku -->
 - Postgres
 
+#### Criar venv do python:
+```shell
+python3 -m venv venv
+```
+
+#### Ativar venv do python:
+```shell
+source ./venv/bin/activate
+```
+
 #### Criar imagem docker do rasa server:
 ```shell
 make build-rasa

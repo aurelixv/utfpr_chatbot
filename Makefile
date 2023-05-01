@@ -1,3 +1,5 @@
+.PHONY: train run clean ngrok
+
 train:
 	docker run -v "$(shell pwd)/bot:/app" aurelixv/rasa_server:latest train --fixed-model-name nlu_utfpr_chatbot
 run:

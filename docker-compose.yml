@@ -10,7 +10,7 @@ services:
         condition: service_healthy
       postgres:
         condition: service_healthy
-    networks: ['net_utfpr_chatbot']
+    networks: ['net']
     restart: no
     command: run -vv --model models/nlu_utfpr_chatbot.tar.gz --credentials credentials_dev.yml -p 5005
     working_dir: /app
@@ -25,7 +25,7 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-    networks: ['net_utfpr_chatbot']
+    networks: ['net']
     restart: unless-stopped
     command: start -vv -p 5055 --actions actions
     volumes:
@@ -42,7 +42,7 @@ services:
   postgres:
     container_name: postgres
     image: aurelixv/postgres:latest
-    networks: ['net_utfpr_chatbot']
+    networks: ['net']
     restart: always
     environment:
       POSTGRES_USER: "utfpr_chatbot"
@@ -59,4 +59,4 @@ services:
       timeout: 5s
       retries: 5
 
-networks: {net_utfpr_chatbot: {}}
+networks: {net: {}}
