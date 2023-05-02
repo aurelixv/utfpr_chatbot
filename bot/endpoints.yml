@@ -2,11 +2,11 @@
 tracker_store:
     type: SQL
     dialect: "postgresql"
-    url: "ec2-44-194-4-127.compute-1.amazonaws.com"
-    db: "<database>"
-    username: "<username>"
-    password: "<password>"
+    url: "postgres"
+    db: "utfpr_chatbot"
+    username: "utfpr_chatbot"
+    password: "utfpr_chatbot"
     port: 5432
 
 action_endpoint:
- url: "http://localhost:5055/webhook"
+ url: "http://rasa_actions:5055/webhook"
