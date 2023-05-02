@@ -12,12 +12,12 @@
 - Git
 - Docker
 - Docker Compose
-<!-- - Heroku -->
 - Postgres
+<!-- - Heroku -->
 
 ### Tutorial para executar o Chatbot na máquina local:
 
-####0. Pré-requisitos:
+#### 0. Pré-requisitos:
 - Possuir o Docker instalado na máquina:
     - https://www.docker.com/products/docker-desktop/
 - Possuir o ngrok instalado na máquina:
