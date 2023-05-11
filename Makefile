@@ -20,6 +20,10 @@ build-postgres:
 	cd docker/ && \
 		docker build -f postgres.Dockerfile -t aurelixv/postgres . && \
 		docker push aurelixv/postgres:latest
+build-pgadmin:
+	cd docker/ && \
+		docker build -f pgadmin.Dockerfile -t aurelixv/pgadmin . && \
+		docker push aurelixv/pgadmin:latest
 build-ngrok:
 	cd docker/ && \
 		docker build -f ngrok.Dockerfile -t aurelixv/ngrok . && \

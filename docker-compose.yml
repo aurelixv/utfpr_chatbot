@@ -43,7 +43,7 @@ services:
     container_name: postgres
     image: aurelixv/postgres:latest
     networks: ['net']
-    restart: always
+    restart: unless-stopped
     environment:
       POSTGRES_USER: "utfpr_chatbot"
       POSTGRES_PASSWORD: "utfpr_chatbot"
@@ -58,5 +58,22 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+
+  pgadmin:
+    container_name: pgadmin
+    image: aurelixv/pgadmin:latest
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks: ['net']
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "admin@utfpr-chatbot.com"
+      PGADMIN_DEFAULT_PASSWORD: "utfpr_chatbot"
+    volumes:
+      - ./pgadmin/servers.json:/pgadmin4/servers.json
+      - ./pgadmin/pgpass:/root/.pgadmin
+    ports:
+      - 8888:80
 
 networks: {net: {}}
