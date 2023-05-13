@@ -16,7 +16,7 @@
     - [1. Clonar o repositório para a máquina local](#1-clonar-o-repositório-para-a-máquina-local)
     - [2. Treinar modelo](#2-treinar-modelo)
     - [3. Inicializar o ngrok](#3-inicializar-o-ngrok)
-    - [4. Subir o bot](#4-subir-o-bot)
+    - [4. Subir e parar o bot](#4-subir-e-parar-o-bot)
     - [Extra: Subir versão limpa](#extra-subir-versão-limpa)
   - [Alterando credenciais do Telegram](#alterando-credenciais-do-telegram)
     - [Conversando com o Chatbot](#conversando-com-o-chatbot)
@@ -80,10 +80,21 @@ $ make ngrok
 # Após rodar, copiar o endereço https e colar no arquivo credentials.yml
 ```
 
-#### 4. Subir o bot
-Utilizando Docker Compose, sobe os 3 containers necessários para o funcionamento do Chatbot: rasa, rasa-sdk e postgres. As imagens possuem personalizações e estão disponíveis no Docker Hub aurelixv.
+#### 4. Subir e parar o bot
+Utilizando Docker Compose, sobe os containers necessários para o funcionamento do Chatbot: rasa, rasa-sdk, postgres e pgadmin. As imagens possuem personalizações e estão disponíveis no Docker Hub aurelixv.
 ```shell
-$ make run
+# Subir o bot
+$ make up
+```
+
+```shell
+# Parar o bot
+$ make stop
+```
+
+```shell
+# Apaga containers
+$ make down
 ```
 
 #### Extra: Subir versão limpa

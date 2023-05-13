@@ -1,13 +1,17 @@
 .PHONY: train run clean ngrok
 
 train:
-	docker run -v "$(shell pwd)/bot:/app" aurelixv/rasa_server:latest train --fixed-model-name nlu_utfpr_chatbot
-run:
-	docker compose up
+	docker run --name rasa_train -v "$(shell pwd)/bot:/app" aurelixv/rasa_server:latest train --fixed-model-name nlu_utfpr_chatbot
+up:
+	docker compose up -d
+stop:
+	docker compose stop
+down:
+	docker compose down
 clean:
 	docker compose down && \
 		docker compose build --no-cache && \
-		docker compose up
+		docker compose up -d
 build-server:
 	cd docker/ && \
 		docker build -f rasa_server.Dockerfile -t aurelixv/rasa_server . && \

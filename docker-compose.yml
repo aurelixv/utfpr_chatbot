@@ -18,6 +18,11 @@ services:
       - ./bot:/app
     ports:
       - 5005:5005
+    healthcheck:
+      test: ["CMD-SHELL", "curl --fail http://0.0.0.0:5005/ || exit 1"]
+      interval: 1s
+      timeout: 5s
+      retries: 5
 
   rasa_actions:
     container_name: rasa_actions

@@ -41,7 +41,7 @@ rules:
     condition:
     - active_loop: enrollment_schedule_form   # this form must be active
     steps:
-      - intent: cancel # cancelar o form
+      - intent: cancel # cancels the form
       - action: utter_cancel
       - action: action_deactivate_loop
       - active_loop: null
@@ -65,7 +65,7 @@ rules:
     condition:
     - active_loop: internship_form   # this form must be active
     steps:
-      - intent: cancel # cancelar o form
+      - intent: cancel # cancels the form
       - action: utter_cancel
       - action: action_deactivate_loop
       - active_loop: null
@@ -79,3 +79,8 @@ rules:
     steps:
       - intent: deny
       - action: utter_negative_feedback
+
+  - rule: Ask the user to rephrase whenever they send a message with low NLU confidence
+    steps:
+    - intent: nlu_fallback
+    - action: utter_please_rephrase

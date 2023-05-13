@@ -36,7 +36,15 @@ slots:
         entity: internship_type
 
   internship_info:
-    type: text
+    type: categorical
+    influence_conversation: false
+    values:
+      - Informacoes Gerais
+      - Diferenca
+      - Documentacao
+      - Relatorios
+      - Alterar horario
+      - Mais informacoes contatos
     mappings:
       - type: from_entity
         entity: internship_info
@@ -129,6 +137,11 @@ responses:
 
   utter_negative_feedback:
     - text: Que pena... vou deixar anotado e incluir na próxima melhoria do sistema.
+
+  utter_please_rephrase:
+    - text: Me desculpe, não entendi
+    - text: Poderia reformular a pergunta?
+    - text: Perdão, não sei lhe responder
 
   # utter_greet:
   # - buttons:
