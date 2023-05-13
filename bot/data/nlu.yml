@@ -146,6 +146,11 @@ nlu:
     - Alterar horario
     - Mais informacoes contatos
 
+- lookup: internship_type
+  examples: |
+    - obrigatorio
+    - nao obrigatorio
+
 - intent: affirm
   examples: |
     - sim

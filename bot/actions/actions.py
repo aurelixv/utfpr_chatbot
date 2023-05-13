@@ -10,6 +10,11 @@ from yaml.loader import SafeLoader
 from unidecode import unidecode
 import psycopg2
 
+# For debugging code
+import logging
+
+logger = logging.getLogger(__name__)
+
 class Credentials:
     """
     Parses the credentials from yaml file
@@ -154,33 +159,50 @@ class ActionInformInternship(Action):
         return "action_inform_internship"
 
     @staticmethod
-    def get_intent_response_key(tracker):
+    def get_intent_name(tracker):
         """
-        Function that receives a tracker object and returns the intent_response_key
+        Function that receives a tracker object and returns the intent name
         """
-        intent_response_key =  tracker.latest_message['response_selector']\
-            ['default']['response']['intent_response_key']
+        return tracker.latest_message['intent']['name']
 
-        if intent_response_key:
-            return intent_response_key.split('/')[1]
+    @staticmethod
+    def get_slot_internship_type(tracker):
+        """
+        Function that receives a tracker object and returns the internship_type_slot
+        """
+        # retrieve slot
+        internship_type = tracker.get_slot('internship_type')
 
-        return None
+        # pre process
+        if internship_type:
+            internship_type = unidecode(internship_type.upper())
+
+        return internship_type
+
+    @staticmethod
+    def get_slot_internship_info(tracker):
+        """
+        Function that receives a tracker object and returns the internship_type_info
+        """
+        # retrieve slot
+        internship_info = tracker.get_slot('internship_info')
+
+        # pre process
+        if internship_info:
+            internship_info = unidecode(internship_info.upper())
+
+        return internship_info
 
     async def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
-        internship_type = tracker.get_slot('internship_type')
-        internship_info = tracker.get_slot('internship_info')
+        internship_type = self.get_slot_internship_type(tracker)
+        internship_info = self.get_slot_internship_info(tracker)
+        intent = self.get_intent_name(tracker)
 
-        # pre-process the parameters
-        # internship_type = unidecode(internship_type.upper())
-        internship_info = unidecode(internship_info.upper())
-
-        intent = self.get_intent_response_key(tracker)
-
-        dispatcher.utter_message(text=f'Intent: {intent} Informações sobre {internship_type}...'\
-            + f'\n Internship_info {internship_info}')
+        dispatcher.utter_message(text=f'Intent: {intent}\nInformações sobre: {internship_type}'\
+            + f'\nInternship_info: {internship_info}')
 
         # clears the internship_type slot
         return [SlotSet('internship_type', None), SlotSet('internship_info', None)]

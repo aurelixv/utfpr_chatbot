@@ -26,7 +26,11 @@ slots:
       entity: campus
 
   internship_type:
-    type: text
+    type: categorical
+    influence_conversation: false
+    values:
+      - obrigatorio
+      - nao obrigatorio
     mappings:
       - type: from_entity
         entity: internship_type
@@ -97,18 +101,20 @@ responses:
 
   utter_ask_internship_info:
     - buttons:
-      - payload: Informacoes Gerais
+      - payload: informacoes gerais
         title: Informações Gerais
-      - payload: Diferenca
+      - payload: diferenca
         title: Obrigatório vs Não Obrigatório
-      - payload: Documentacao
+      - payload: documentacao
         title: Documentação
-      - payload: Relatorios
+      - payload: relatorios
         title: Relatórios
-      - payload: Alterar horario
+      - payload: alterar horario
         title: Alterar horário
-      - payload: Mais informacoes contatos
+      - payload: mais informacoes
         title: Mais informações/Contatos
+      - payload: cancelar
+        title: Cancelar
       button_type: vertical
       text: O que deseja saber sobre estágio?
 
