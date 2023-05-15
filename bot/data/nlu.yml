@@ -7,6 +7,7 @@ nlu:
     - start
     - oi
     - ola
+    - olar
     - opa
     - olá
     - alô
@@ -20,13 +21,17 @@ nlu:
     - consegue me dar uma forca
     - me ajude
     - me ajuda
+    - /help
     - help
 
 - intent: cancel
   examples: |
+    - /cancelar
     - cancelar
+    - cancel
     - abortar
     - parar
+    - sair
 
 - intent: enrollment_schedule
   examples: |
@@ -48,12 +53,9 @@ nlu:
   examples: |
     - [informacoes](internship_info) sobre estágio
     - quero saber sobre estagio
-    - como funciona o estagio [obrigatorio](internship_type)
-    - como funciona o estagio [obrigatório](internship_type)
-    - onde encontro estagio [não obrigatório](internship_type)
-    - estagio [nao obrigatorio](internship_type)
-    - [nao obrigatorio](internship_type)
-    - [obrigatorio](internship_type)
+    - como funciona o estagio obrigatorio
+    - onde encontro estágio não obrigatório
+    - estagio nao obrigatorio
     - [diferenca](internship_info) entre estagio
     - [documentacao](internship_info) necessaria para estagio
     - [relatorio](internship_info) de estagio
@@ -140,16 +142,38 @@ nlu:
 - lookup: internship_info
   examples: |
     - Informacoes Gerais
+    - Informações Gerais
     - Diferenca
+    - Diferença
     - Documentacao
+    - Documentação
     - Relatorios
+    - Relatórios
     - Alterar horario
+    - Alterar horário
     - Mais informacoes contatos
+    - Mais informações contatos
+
+- regex: internship_info
+  examples: |
+    - Informa[cç][oõ]es Gerais
+    - Diferen[cç]a
+    - Documenta[cç][aã]o
+    - Relat[oó]rios
+    - Alterar hor[aá]rio
+    - Mais informa[cç][oõ]es contatos
 
 - lookup: internship_type
   examples: |
-    - obrigatorio
-    - nao obrigatorio
+    - estágio obrigatório
+    - estagio obrigatorio
+    - estágio não obrigatório
+    - estagio nao obrigatorio
+
+# - regex: internship_type
+#   examples: |
+#     - est[aá]gio obrita[oó]rio
+#     - est[aá]gio n[aã]o obrita[oó]rio
 
 - intent: affirm
   examples: |

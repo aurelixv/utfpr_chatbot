@@ -29,8 +29,8 @@ slots:
     type: categorical
     influence_conversation: false
     values:
-      - obrigatorio
-      - nao obrigatorio
+      - estagio obrigatorio
+      - estagio nao obrigatorio
     mappings:
       - type: from_entity
         entity: internship_type
@@ -139,9 +139,7 @@ responses:
     - text: Que pena... vou deixar anotado e incluir na próxima melhoria do sistema.
 
   utter_please_rephrase:
-    - text: Me desculpe, não entendi
-    - text: Poderia reformular a pergunta?
-    - text: Perdão, não sei lhe responder
+    - text: Perdão, não sei lhe responder. Poderia reformular a pergunta?
 
   # utter_greet:
   # - buttons:

@@ -1,4 +1,4 @@
-CAMPUS_ID;CAMPUS_NAME;STUDENT_PORTAL_LINK
+campus_id;campus_name;student_portal_link
 1;CURITIBA;https://sistemas2.utfpr.edu.br/dpls/sistema/aluno01/mpmenu.inicio
 2;CORNELIO PROCOPIO;https://sistemas2.utfpr.edu.br/dpls/sistema/aluno02/mpmenu.inicio
 3;CAMPO MOURAO;https://sistemas2.utfpr.edu.br/dpls/sistema/aluno03/mpmenu.inicio

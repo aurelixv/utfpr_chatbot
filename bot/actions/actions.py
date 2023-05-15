@@ -163,6 +163,9 @@ class ActionInformInternship(Action):
         """
         Function that receives a tracker object and returns the intent name
         """
+
+        logger.debug(tracker.latest_message)
+
         return tracker.latest_message['intent']['name']
 
     @staticmethod

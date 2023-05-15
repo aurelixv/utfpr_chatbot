@@ -28,7 +28,7 @@ rules:
       - action: enrollment_schedule_form      # run the form
       - active_loop: enrollment_schedule_form # this form is active
 
-  - rule: submit enrollment_schedule form
+  - rule: submit enrollment_schedule when active form
     condition:
     - active_loop: enrollment_schedule_form   # this form must be active
     steps:
@@ -52,12 +52,18 @@ rules:
       - action: internship_form      # run the form
       - active_loop: internship_form # this form is active
 
-  - rule: submit internship form
+  - rule: submit internship when active form
     condition:
     - active_loop: internship_form   # this form must be active
     steps:
       - action: internship_form      # run the form
       - active_loop: null            # the form is no longer active because it has been filled
+      - action: action_inform_internship
+      - action: utter_did_that_help
+
+  - rule: submit internship
+    steps:
+      - intent: inform_internship_info
       - action: action_inform_internship
       - action: utter_did_that_help
 
@@ -84,3 +90,5 @@ rules:
     steps:
     - intent: nlu_fallback
     - action: utter_please_rephrase
+    - action: action_deactivate_loop
+    - active_loop: null
