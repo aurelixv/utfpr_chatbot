@@ -1,7 +1,8 @@
 .PHONY: train run clean ngrok
 
 train:
-	docker run --name rasa_train -v "$(shell pwd)/bot:/app" aurelixv/rasa_server:latest train --fixed-model-name nlu_utfpr_chatbot
+	docker run --name rasa_train -v "$(shell pwd)/bot:/app" aurelixv/rasa_server:latest train --fixed-model-name nlu_utfpr_chatbot && \
+		docker rm rasa_train
 up:
 	docker compose up -d
 stop:
