@@ -115,7 +115,7 @@ Para desenvolver códigos locais ou utilizar os notebooks disponíveis no projet
 
 #### 1. Criar venv do python
 ```shell
-$ python3.9 -m venv venv
+$ python3.10 -m venv venv
 ```
 
 #### 2. Ativar venv do python
