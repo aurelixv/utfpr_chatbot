@@ -1,8 +1,15 @@
+"""
+Module docstring
+"""
+
+import logging
+import re
+
 # Rasa
 from typing import Any, Text, Dict, List
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
-from rasa_sdk.events import SlotSet
+from rasa_sdk.events import SlotSet, AllSlotsReset
 
 # Other imports
 import yaml
@@ -11,8 +18,6 @@ from unidecode import unidecode
 import psycopg2
 
 # For debugging code
-import logging
-
 logger = logging.getLogger(__name__)
 
 class Credentials:
@@ -176,10 +181,6 @@ class ActionInformInternship(Action):
         # retrieve slot
         internship_type = tracker.get_slot('internship_type')
 
-        # pre process
-        if internship_type:
-            internship_type = unidecode(internship_type.upper())
-
         return internship_type
 
     @staticmethod
@@ -207,5 +208,50 @@ class ActionInformInternship(Action):
         dispatcher.utter_message(text=f'Intent: {intent}\nInformações sobre: {internship_type}'\
             + f'\nInternship_info: {internship_info}')
 
-        # clears the internship_type slot
-        return [SlotSet('internship_type', None), SlotSet('internship_info', None)]
+        # clears the internship_info slot
+        return [SlotSet('internship_info', None)]
+
+class ActionExtractInternshipType(Action):
+    """
+    Handles the action_extract_internship_type action
+    """
+    def name(self) -> Text:
+        return "action_extract_internship_type"
+
+    async def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+        # retrieve last user message
+        latest_message = tracker.latest_message['text']
+
+        # retrieve previously defined internship_type slot
+        old_internship_type = tracker.get_slot('internship_type')
+
+        # regex to find entity
+        if re.search('n[aã]o obrigat[oó]rio', latest_message):
+            new_internship_type = 'nao obrigatorio'
+        elif re.search('obrigat[oó]rio', latest_message):
+            new_internship_type = 'obrigatorio'
+        else:
+            new_internship_type = None
+
+        # pre process
+        if new_internship_type:
+            new_internship_type = unidecode(new_internship_type.upper())
+            return [SlotSet('internship_type', new_internship_type)]
+
+        return [SlotSet('internship_type', old_internship_type)]
+
+class ActionClearSlots(Action):
+    """
+    Handles the action_clear_slots action
+    """
+    def name(self) -> Text:
+        return "action_clear_slots"
+
+    async def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+        return [AllSlotsReset()]

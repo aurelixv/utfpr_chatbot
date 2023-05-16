@@ -33,6 +33,12 @@ nlu:
     - parar
     - sair
 
+- intent: clear
+  examples: |
+    - /limpar
+    - limpar
+    - clear
+
 - intent: enrollment_schedule
   examples: |
     - quero o cronograma de matricula
@@ -163,12 +169,12 @@ nlu:
     - Alterar hor[aá]rio
     - Mais informa[cç][oõ]es contatos
 
-- lookup: internship_type
-  examples: |
-    - estágio obrigatório
-    - estagio obrigatorio
-    - estágio não obrigatório
-    - estagio nao obrigatorio
+# - lookup: internship_type
+#   examples: |
+#     - estágio obrigatório
+#     - estagio obrigatorio
+#     - estágio não obrigatório
+#     - estagio nao obrigatorio
 
 # - regex: internship_type
 #   examples: |

@@ -3,6 +3,8 @@ version: "3.1"
 actions:
   - action_get_schedule
   - action_inform_internship
+  - action_extract_internship_type
+  - action_clear_slots
 
 forms:
   enrollment_schedule_form:
@@ -15,7 +17,7 @@ forms:
 
 entities:
   - campus
-  - internship_type
+  # - internship_type
   - internship_info
 
 slots:
@@ -26,14 +28,10 @@ slots:
       entity: campus
 
   internship_type:
-    type: categorical
+    type: text
     influence_conversation: false
-    values:
-      - estagio obrigatorio
-      - estagio nao obrigatorio
     mappings:
-      - type: from_entity
-        entity: internship_type
+    - type: custom
 
   internship_info:
     type: categorical
@@ -52,6 +50,7 @@ slots:
 intents:
   - start
   - cancel
+  - clear
   - chitchat
   - faq
   - enrollment_schedule
@@ -140,6 +139,9 @@ responses:
 
   utter_please_rephrase:
     - text: Perdão, não sei lhe responder. Poderia reformular a pergunta?
+
+  utter_clear:
+    - text: Limpando memória do bot...
 
   # utter_greet:
   # - buttons:

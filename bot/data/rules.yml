@@ -43,12 +43,14 @@ rules:
     steps:
       - intent: cancel # cancels the form
       - action: utter_cancel
+      - action: action_clear_slots
       - action: action_deactivate_loop
       - active_loop: null
 
   - rule: activate internship form
     steps:
       - intent: internship   # intent that triggers form activation
+      - action: action_extract_internship_type
       - action: internship_form      # run the form
       - active_loop: internship_form # this form is active
 
@@ -58,12 +60,14 @@ rules:
     steps:
       - action: internship_form      # run the form
       - active_loop: null            # the form is no longer active because it has been filled
+      - action: action_extract_internship_type
       - action: action_inform_internship
       - action: utter_did_that_help
 
   - rule: submit internship
     steps:
       - intent: inform_internship_info
+      - action: action_extract_internship_type
       - action: action_inform_internship
       - action: utter_did_that_help
 
@@ -73,6 +77,7 @@ rules:
     steps:
       - intent: cancel # cancels the form
       - action: utter_cancel
+      - action: action_clear_slots
       - action: action_deactivate_loop
       - active_loop: null
 
@@ -92,3 +97,15 @@ rules:
     - action: utter_please_rephrase
     - action: action_deactivate_loop
     - active_loop: null
+
+  - rule: cancel
+    steps:
+      - intent: cancel
+      - action: utter_clear
+      - action: action_clear_slots
+
+  - rule: clear
+    steps:
+      - intent: clear
+      - action: utter_clear
+      - action: action_clear_slots
