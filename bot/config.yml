@@ -11,7 +11,7 @@ pipeline:
 - name: WhitespaceTokenizer
 - name: RegexFeaturizer
 - name: RegexEntityExtractor
-  use_lookup_tables: true
+  use_lookup_tables: True
 - name: LexicalSyntacticFeaturizer
 - name: CountVectorsFeaturizer
 - name: CountVectorsFeaturizer

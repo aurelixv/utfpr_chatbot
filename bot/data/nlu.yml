@@ -18,7 +18,7 @@ nlu:
     - boa noite
     - preciso de ajuda
     - voce pode me ajudar
-    - consegue me dar uma forca
+    - consegue me dar uma força
     - me ajude
     - me ajuda
     - /help
@@ -91,7 +91,6 @@ nlu:
     - obrigado
     - muito obrigado
     - valeu
-    - show
     - me ajudou bastante
     - foi muito util
 
@@ -115,7 +114,7 @@ nlu:
     - o que é a universidade
     - universidade tecnologica federal do parana
     - informacao sobre a universidade
-    - site
+    - qual é o site da instituição
     - pagina da universidade
 
 - intent: faq/portal
@@ -184,10 +183,10 @@ nlu:
 - intent: affirm
   examples: |
     - sim
-    - s
-    - yes
+    - afirmativo
     - concordo
     - com certeza
+    - certeza
     - parece bom
     - correto
 
@@ -195,7 +194,6 @@ nlu:
   examples: |
     - não
     - nao
-    - n
     - nunca
     - não concordo
     - sem condição

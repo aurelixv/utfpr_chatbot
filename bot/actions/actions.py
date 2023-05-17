@@ -1,7 +1,6 @@
 """
 Module docstring
 """
-
 import logging
 import re
 
@@ -35,6 +34,10 @@ class Credentials:
         self.user = credentials['username']
         self.password = credentials['password']
 
+    def __repr__(self):
+        return f'\nhost: {self.host}\ndatabase: {self.database}\n' \
+            f'user: {self.user}\npassword: {self.password}'
+
 def psql_connect(credentials: Credentials):
     """
     Establishes a connection to postgres
@@ -58,43 +61,55 @@ class ActionGetSchedule(Action):
         return "action_get_schedule"
 
     @staticmethod
+    def get_campus_slot(tracker):
+        """
+        Function that receives a tracker object and returns the campus slot
+        """
+        # retrieve slot
+        campus = tracker.get_slot('campus')
+
+        # pre process
+        if campus:
+            campus = unidecode(campus.upper())
+
+        return campus
+
+    @staticmethod
     def get_schedule(campus: Text) -> Dict:
         """
         Function that receives a campus (key), pre-processes it and returns its values
         """
+        q_year_semester = """
+            SELECT A.YEAR,
+                A.SEMESTER
+            FROM ENROLLMENT_SCHEDULE A
+            LEFT JOIN CAMPUS B
+                ON A.CAMPUS_ID = B.CAMPUS_ID
+            WHERE B.CAMPUS_NAME = (%s)
+            ORDER BY YEAR DESC, SEMESTER DESC 
+            LIMIT 1
+        """
+        q_schedule = """
+            SELECT B.CAMPUS_NAME,
+                C.ENROLLMENT_PHASE_NAME,
+                A.START_TIMESTAMP,
+                A.END_TIMESTAMP
+            FROM ENROLLMENT_SCHEDULE A
+            LEFT JOIN CAMPUS B
+                ON A.CAMPUS_ID = B.CAMPUS_ID
+            LEFT JOIN ENROLLMENT_PHASE C
+                ON A.ENROLLMENT_PHASE_ID = C.ENROLLMENT_PHASE_ID
+            WHERE B.CAMPUS_NAME = (%s)
+                AND A.YEAR = (%s)
+                AND A.SEMESTER = (%s)
+        """
+
         # connects to db
         credentials = Credentials('endpoints.yml')
         conn = psql_connect(credentials)
 
         if conn:
-            # pre-process the campus parameter
-            campus = unidecode(campus.upper())
-
             # query the data
-            q_year_semester = """
-                SELECT A.YEAR,
-                    A.SEMESTER
-                FROM ENROLLMENT_SCHEDULE A
-                LEFT JOIN CAMPUS B
-                    ON A.CAMPUS_ID = B.CAMPUS_ID
-                WHERE B.CAMPUS_NAME = (%s)
-                ORDER BY YEAR DESC, SEMESTER DESC 
-                LIMIT 1
-            """
-            q_schedule = """
-                SELECT B.CAMPUS_NAME,
-                    C.ENROLLMENT_PHASE_NAME,
-                    A.START_TIMESTAMP,
-                    A.END_TIMESTAMP
-                FROM ENROLLMENT_SCHEDULE A
-                LEFT JOIN CAMPUS B
-                    ON A.CAMPUS_ID = B.CAMPUS_ID
-                LEFT JOIN ENROLLMENT_PHASE C
-                    ON A.ENROLLMENT_PHASE_ID = C.ENROLLMENT_PHASE_ID
-                WHERE B.CAMPUS_NAME = (%s)
-                    AND A.YEAR = (%s)
-                    AND A.SEMESTER = (%s)
-            """
             with conn.cursor() as cur:
                 cur.execute(q_year_semester, (campus,))
                 year_semester = cur.fetchall()
@@ -131,7 +146,7 @@ class ActionGetSchedule(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
-        campus = tracker.get_slot('campus')
+        campus = self.get_campus_slot(tracker)
         schedule = self.get_schedule(campus)
 
         if schedule:
@@ -144,7 +159,7 @@ class ActionGetSchedule(Action):
             for phase in phases:
                 response += f"{phase.upper()}\n"\
                     f"- Início: {phases[phase]['start_date']} a partir das "\
-                    f"{phases[phase]['start_hour']} horas.\n" \
+                    f"{phases[phase]['start_hour']} horas.\n"\
                     f"- Término: {phases[phase]['end_date']} até às "\
                     f"{phases[phase]['end_hour']} horas.\n\n"
 
@@ -174,17 +189,21 @@ class ActionInformInternship(Action):
         return tracker.latest_message['intent']['name']
 
     @staticmethod
-    def get_slot_internship_type(tracker):
+    def get_internship_type_slot(tracker):
         """
         Function that receives a tracker object and returns the internship_type_slot
         """
         # retrieve slot
         internship_type = tracker.get_slot('internship_type')
 
+        # pre process
+        if internship_type:
+            internship_type = unidecode(internship_type.upper())
+
         return internship_type
 
     @staticmethod
-    def get_slot_internship_info(tracker):
+    def get_internship_info_slot(tracker):
         """
         Function that receives a tracker object and returns the internship_type_info
         """
@@ -197,16 +216,116 @@ class ActionInformInternship(Action):
 
         return internship_info
 
+    @staticmethod
+    def get_internship_type_id(internship_type: Text):
+        """
+        Function that receives an internship_type and queries the database to
+        return the corresponding internship_type_id
+        """
+        q_internship_type = """
+            SELECT A.INTERNSHIP_TYPE_ID,
+                A.INTERNSHIP_TYPE_NAME
+            FROM INTERNSHIP_TYPE A
+            WHERE A.INTERNSHIP_TYPE_NAME = (%s)
+            LIMIT 1
+        """
+
+        credentials = Credentials('endpoints.yml')
+        conn = psql_connect(credentials)
+
+        internship_type_id = None
+        if conn:
+            with conn.cursor() as cur:
+                cur.execute(q_internship_type, (internship_type,))
+                result = cur.fetchall()
+
+            conn.close()
+
+            if len(result) > 0:
+                internship_type_id = result[0][0]
+
+        return internship_type_id
+
+    @staticmethod
+    def get_internship_info_id(internship_info: Text):
+        """
+        Function that receives an internship_info and queries the database to
+        return the corresponding internship_info_id
+        """
+        q_internship_info = """
+            SELECT A.INTERNSHIP_INFO_ID,
+                A.INTERNSHIP_INFO_NAME,
+                A.INTERNSHIP_DESCRIPTION
+            FROM INTERNSHIP_INFO A
+            WHERE A.INTERNSHIP_INFO_NAME = (%s)
+            LIMIT 1
+        """
+
+        credentials = Credentials('endpoints.yml')
+        conn = psql_connect(credentials)
+
+        internship_info_id = None
+        if conn:
+            with conn.cursor() as cur:
+                cur.execute(q_internship_info, (internship_info,))
+                result = cur.fetchall()
+
+            conn.close()
+
+            if len(result) > 0:
+                internship_info_id = result[0][0]
+
+        return internship_info_id
+
+    @staticmethod
+    def get_internship_text(internship_info_id, internship_type_id):
+        """
+        Function that receives an internship_info and queries the database to
+        return the corresponding internship_info_id
+        """
+        q_internship_text = """
+            SELECT A.INTERNSHIP_INFO_ID,
+                A.INTERNSHIP_TYPE_ID,
+                A.UPDATE_TIMESTAMP,
+                A.INFO_TEXT
+            FROM INTERNSHIP_TEXT A
+            WHERE A.INTERNSHIP_INFO_ID = (%s)
+                AND A.INTERNSHIP_TYPE_ID = (%s)
+            LIMIT 1
+        """
+
+        credentials = Credentials('endpoints.yml')
+        conn = psql_connect(credentials)
+
+        internship_text = None
+        if conn:
+            with conn.cursor() as cur:
+                cur.execute(q_internship_text, (internship_info_id, internship_type_id))
+                result = cur.fetchall()
+
+            conn.close()
+
+            if len(result) > 0:
+                internship_text = result[0][3]
+
+        return internship_text
+
     async def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
-        internship_type = self.get_slot_internship_type(tracker)
-        internship_info = self.get_slot_internship_info(tracker)
+        internship_type = self.get_internship_type_slot(tracker)
+        internship_type_id = self.get_internship_type_id(internship_type)
+        internship_info = self.get_internship_info_slot(tracker)
+        internship_info_id = self.get_internship_info_id(internship_info)
+        internship_text = self.get_internship_text(internship_info_id, internship_type_id)
         intent = self.get_intent_name(tracker)
 
-        dispatcher.utter_message(text=f'Intent: {intent}\nInformações sobre: {internship_type}'\
-            + f'\nInternship_info: {internship_info}')
+        # debug
+        dispatcher.utter_message(text=f'intent: {intent}'\
+            + f'\ninternship_type: {internship_type} id: {internship_type_id}'\
+            + f'\ninternship_info: {internship_info} id: {internship_info_id}'\
+            + f'\ninternship_text: {internship_text}')
 
         # clears the internship_info slot
         return [SlotSet('internship_info', None)]
