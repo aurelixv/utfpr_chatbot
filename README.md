@@ -26,14 +26,7 @@
     - [2. Ativar venv do python](#2-ativar-venv-do-python)
     - [3. Instalar pacotes](#3-instalar-pacotes)
   - [Personalização das imagens Docker](#personalização-das-imagens-docker)
-    - [Criar imagem docker do rasa server](#criar-imagem-docker-do-rasa-server)
-    - [Criar imagem docker do actions server](#criar-imagem-docker-do-actions-server)
-    - [Criar imagem docker do postgres](#criar-imagem-docker-do-postgres)
-    - [Criar imagem docker do pgadmin](#criar-imagem-docker-do-pgadmin)
-  - [Comandos para deploy/release](#comandos-para-deployrelease)
-    - [Deploy da aplicação no Heroku](#deploy-da-aplicação-no-heroku)
-    - [Release da aplicação no Heroku](#release-da-aplicação-no-heroku)
-    - [Para inicializar o postgres do terminal](#para-inicializar-o-postgres-do-terminal)
+    - [Criar imagens docker do rasa server, actions server, postgres e pgadmin:](#criar-imagens-docker-do-rasa-server-actions-server-postgres-e-pgadmin)
   - [Misc](#misc)
     - [Para criar as bases no postgres (**DDL**)](#para-criar-as-bases-no-postgres-ddl)
     - [Para preencher as bases criadas (**DML**)](#para-preencher-as-bases-criadas-dml)
@@ -130,43 +123,11 @@ $ pip install -r requirements.txt
 
 ### Personalização das imagens Docker
 
-Caso seja necessário atualizar ou personalizar alguma das imagens Docker utilizadas no projeto, alterar scripts Dockerfile para respectiva conta Docker Hub e utilizar os respectivos comandos conforme necessidade:
+Caso seja necessário atualizar ou personalizar alguma das imagens Docker utilizadas no projeto, alterar arquivo **docker-compose.yml** para respectiva conta Docker Hub (ou nenhuma conta) e utilizar o respectivo comando:
 
-#### Criar imagem docker do rasa server
+#### Criar imagens docker do rasa server, actions server, postgres e pgadmin:
 ```shell
-$ make build-rasa
-```
-
-#### Criar imagem docker do actions server
-```shell
-$ make build-actions
-```
-
-#### Criar imagem docker do postgres
-```shell
-$ make build-postgres
-```
-
-#### Criar imagem docker do pgadmin
-```shell
-$ make build-pgadmin
-```
-
-### Comandos para deploy/release
-
-#### Deploy da aplicação no Heroku
-```shell
-$ make deploy
-```
-
-#### Release da aplicação no Heroku
-```shell
-$ make release
-```
-
-#### Para inicializar o postgres do terminal
-```shell
-$ heroku pg:psql -a utfpr-chatbot
+$ make build
 ```
 
 ### Misc

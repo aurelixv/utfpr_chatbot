@@ -1,12 +1,16 @@
 
-name: utfpr_chatbot
+version: '3'
+name: utfpr-chatbot
 
 services:
-  rasa_server:
-    container_name: rasa_server
-    image: aurelixv/rasa_server:latest
+  rasa-server:
+    container_name: rasa-server
+    image: aurelixv/rasa-server:latest
+    build:
+      context: .
+      dockerfile: ./docker/rasa-server.Dockerfile
     depends_on:
-      rasa_actions:
+      rasa-actions:
         condition: service_healthy
       postgres:
         condition: service_healthy
@@ -24,9 +28,12 @@ services:
       timeout: 5s
       retries: 5
 
-  rasa_actions:
-    container_name: rasa_actions
-    image: aurelixv/rasa_actions:latest
+  rasa-actions:
+    container_name: rasa-actions
+    image: aurelixv/rasa-actions:latest
+    build:
+      context: .
+      dockerfile: ./docker/rasa-actions.Dockerfile
     depends_on:
       postgres:
         condition: service_healthy
@@ -47,6 +54,9 @@ services:
   postgres:
     container_name: postgres
     image: aurelixv/postgres:latest
+    build:
+      context: .
+      dockerfile: ./docker/postgres.Dockerfile
     networks: ['net']
     restart: unless-stopped
     environment:
@@ -67,6 +77,9 @@ services:
   pgadmin:
     container_name: pgadmin
     image: aurelixv/pgadmin:latest
+    build:
+      context: .
+      dockerfile: ./docker/pgadmin.Dockerfile
     depends_on:
       postgres:
         condition: service_healthy
