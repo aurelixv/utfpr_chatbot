@@ -16,7 +16,7 @@ services:
         condition: service_healthy
     networks: ['net']
     restart: no
-    command: run -vv --model models/nlu_utfpr_chatbot.tar.gz --credentials credentials_dev.yml -p 5005
+    command: run -vv --model models/nlu_utfpr_chatbot.tar.gz --credentials credentials.yml -p 5005
     working_dir: /app
     volumes:
       - ./bot:/app

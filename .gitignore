@@ -20,3 +20,6 @@ venv/
 
 # playground (local tests)
 playground
+
+# ngrok log
+ngrok/ngrok.log

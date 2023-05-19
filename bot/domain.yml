@@ -67,9 +67,11 @@ responses:
         title: Cronograma de Matrícula
       - payload: estagio
         title: Informaçōes de Estágio
-      - payload: site
+      - payload: auxilio
+        title: Auxílio Estudantil
+      - payload: site da instituicao
         title: Site da Instituição
-      - payload: portal
+      - payload: portal do aluno
         title: Portal do Aluno
       button_type: vertical
       text: Olá! Eu sou o assistente virtual da UTFPR, como posso lhe ajudar?

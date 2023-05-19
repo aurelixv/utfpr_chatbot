@@ -306,7 +306,8 @@ class ActionInformInternship(Action):
             conn.close()
 
             if len(result) > 0:
-                internship_text = result[0][3]
+                # pre-process to enable breaklines
+                internship_text = result[0][3].replace('\\n', '\n')
 
         return internship_text
 

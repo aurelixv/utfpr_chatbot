@@ -16,6 +16,6 @@ build:
 	docker compose build --no-cache && \
 		docker compose push
 ngrok:
-	ngrok http 5005 --config ./ngrok/ngrok.yml
+	nohup ngrok http 5005 --config ./ngrok/ngrok.yml --log=stdout > ngrok/ngrok.log &
 clear-bot-cache:
 	rm -r bot/.rasa/*

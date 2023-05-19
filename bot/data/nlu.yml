@@ -116,6 +116,7 @@ nlu:
     - informacao sobre a universidade
     - qual é o site da instituição
     - pagina da universidade
+    - site da instituicao
 
 - intent: faq/portal
   examples: |
