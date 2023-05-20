@@ -1,4 +1,4 @@
-.PHONY: train up stop down clean build ngrok clear-bot-cache
+.PHONY: train up stop down clean build ngrok update-webhook clear-bot-cache
 
 train:
 	docker run --name rasa-train -v "$(shell pwd)/bot:/app" aurelixv/rasa-server:latest train --fixed-model-name nlu_utfpr_chatbot && \
@@ -17,5 +17,7 @@ build:
 		docker compose push
 ngrok:
 	nohup ngrok http 5005 --config ./ngrok/ngrok.yml --log=stdout > ngrok/ngrok.log &
+update-webhook:
+	python ngrok/update_webhook_url.py
 clear-bot-cache:
 	rm -r bot/.rasa/*
