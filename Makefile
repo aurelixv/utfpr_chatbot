@@ -8,7 +8,7 @@ up:
 stop:
 	docker compose stop
 down:
-	docker compose down
+	docker compose down -v
 clean:
 	docker compose down && \
 		docker compose up -d

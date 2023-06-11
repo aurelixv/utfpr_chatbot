@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -o kubernetes --volumes=hostPath
+    kompose.version: 1.28.0 (HEAD)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: rasa-actions
+  name: rasa-actions
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: rasa-actions
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -o kubernetes --volumes=hostPath
+        kompose.version: 1.28.0 (HEAD)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/utfpr-chatbot-net: "true"
+        io.kompose.service: rasa-actions
+    spec:
+      containers:
+        - args:
+            - start
+            - -vv
+            - -p
+            - "5055"
+            - --actions
+            - actions
+          image: aurelixv/rasa-actions:latest
+          livenessProbe:
+            exec:
+              command:
+                - curl
+                - --fail
+                - http://0.0.0.0:5055/health
+            failureThreshold: 5
+            periodSeconds: 1
+            timeoutSeconds: 5
+          name: rasa-actions
+          ports:
+            - containerPort: 5055
+          resources: {}
+          volumeMounts:
+            - mountPath: /app/actions
+              name: rasa-actions-hostpath0
+            - mountPath: /app/endpoints.yml
+              name: rasa-actions-hostpath1
+      restartPolicy: Always
+      volumes:
+        - hostPath:
+            path: /Users/aurelius/Documents/TCC - Chatbot UTFPR/dev/bot/actions
+          name: rasa-actions-hostpath0
+        - hostPath:
+            path: /Users/aurelius/Documents/TCC - Chatbot UTFPR/dev/bot/endpoints.yml
+          name: rasa-actions-hostpath1
+status: {}
