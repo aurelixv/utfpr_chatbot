@@ -1,0 +1,89 @@
+
+version: "3"
+name: utfpr-chatbot
+
+services:
+  rasa-server:
+    container_name: rasa-server
+    image: utfprchatbot.azurecr.io/rasa-server-prod:latest
+    build:
+      context: .
+      dockerfile: ./docker/rasa-server-prod.Dockerfile
+    depends_on:
+      rasa-actions:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+    networks: ["net"]
+    restart: always
+    command: run -vv --model models/nlu_utfpr_chatbot.tar.gz --credentials credentials.yml -p 5005
+    working_dir: /app
+    ports:
+      - 5005:5005
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://0.0.0.0:5005/"]
+      interval: 60s
+      timeout: 5s
+      retries: 5
+    labels:
+      kompose.service.type: loadbalancer
+
+  rasa-actions:
+    container_name: rasa-actions
+    image: utfprchatbot.azurecr.io/rasa-actions-prod:latest
+    build:
+      context: .
+      dockerfile: ./docker/rasa-actions-prod.Dockerfile
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks: ["net"]
+    restart: always
+    command: start -vv -p 5055 --actions actions
+    ports:
+      - 5055:5055
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://0.0.0.0:5055/health"]
+      interval: 1s
+      timeout: 5s
+      retries: 5
+
+  postgres:
+    container_name: postgres
+    image: utfprchatbot.azurecr.io/postgres-prod:latest
+    build:
+      context: .
+      dockerfile: ./docker/postgres-prod.Dockerfile
+    networks: ["net"]
+    restart: always
+    environment:
+      POSTGRES_USER: "utfpr_chatbot"
+      POSTGRES_PASSWORD: "utfpr_chatbot"
+    ports:
+      - 5432:5432
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "utfpr_chatbot"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  pgadmin:
+    container_name: pgadmin
+    image: utfprchatbot.azurecr.io/pgadmin-prod:latest
+    build:
+      context: .
+      dockerfile: ./docker/pgadmin-prod.Dockerfile
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks: ["net"]
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "admin@utfpr-chatbot.com"
+      PGADMIN_DEFAULT_PASSWORD: "utfpr_chatbot"
+    ports:
+      - 8888:80
+    labels:
+      kompose.service.type: loadbalancer
+
+networks: {net: {}}

@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   annotations:
-    kompose.cmd: kompose convert -o kubernetes --volumes=hostPath
+    kompose.cmd: kompose convert -f docker-compose-prod.yml -o kubernetes
     kompose.service.type: loadbalancer
     kompose.version: 1.28.0 (HEAD)
   creationTimestamp: null
@@ -14,12 +14,11 @@ spec:
   selector:
     matchLabels:
       io.kompose.service: pgadmin
-  strategy:
-    type: Recreate
+  strategy: {}
   template:
     metadata:
       annotations:
-        kompose.cmd: kompose convert -o kubernetes --volumes=hostPath
+        kompose.cmd: kompose convert -f docker-compose-prod.yml -o kubernetes
         kompose.service.type: loadbalancer
         kompose.version: 1.28.0 (HEAD)
       creationTimestamp: null
@@ -33,22 +32,10 @@ spec:
               value: admin@utfpr-chatbot.com
             - name: PGADMIN_DEFAULT_PASSWORD
               value: utfpr_chatbot
-          image: aurelixv/pgadmin:latest
+          image: utfprchatbot.azurecr.io/pgadmin-prod:latest
           name: pgadmin
           ports:
             - containerPort: 80
           resources: {}
-          volumeMounts:
-            - mountPath: /pgadmin4/servers.json
-              name: pgadmin-hostpath0
-            - mountPath: /root/.pgadmin
-              name: pgadmin-hostpath1
       restartPolicy: Always
-      volumes:
-        - hostPath:
-            path: /Users/aurelius/Documents/TCC - Chatbot UTFPR/dev/pgadmin/servers.json
-          name: pgadmin-hostpath0
-        - hostPath:
-            path: /Users/aurelius/Documents/TCC - Chatbot UTFPR/dev/pgadmin/pgpass
-          name: pgadmin-hostpath1
 status: {}

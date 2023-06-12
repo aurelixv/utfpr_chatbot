@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   annotations:
-    kompose.cmd: kompose convert -o kubernetes --volumes=hostPath
+    kompose.cmd: kompose convert -f docker-compose-prod.yml -o kubernetes
     kompose.version: 1.28.0 (HEAD)
   creationTimestamp: null
   labels:
@@ -13,12 +13,11 @@ spec:
   selector:
     matchLabels:
       io.kompose.service: postgres
-  strategy:
-    type: Recreate
+  strategy: {}
   template:
     metadata:
       annotations:
-        kompose.cmd: kompose convert -o kubernetes --volumes=hostPath
+        kompose.cmd: kompose convert -f docker-compose-prod.yml -o kubernetes
         kompose.version: 1.28.0 (HEAD)
       creationTimestamp: null
       labels:
@@ -31,7 +30,7 @@ spec:
               value: utfpr_chatbot
             - name: POSTGRES_USER
               value: utfpr_chatbot
-          image: aurelixv/postgres:latest
+          image: utfprchatbot.azurecr.io/postgres-prod:latest
           livenessProbe:
             exec:
               command:
@@ -45,22 +44,5 @@ spec:
           ports:
             - containerPort: 5432
           resources: {}
-          volumeMounts:
-            - mountPath: /docker-entrypoint-initdb.d/ingestion.sh
-              name: postgres-hostpath0
-            - mountPath: /utfpr_chatbot/data
-              name: postgres-hostpath1
-            - mountPath: /utfpr_chatbot/DDL
-              name: postgres-hostpath2
       restartPolicy: Always
-      volumes:
-        - hostPath:
-            path: /Users/aurelius/Documents/TCC - Chatbot UTFPR/dev/database/ingestion.sh
-          name: postgres-hostpath0
-        - hostPath:
-            path: /Users/aurelius/Documents/TCC - Chatbot UTFPR/dev/database/data_csv
-          name: postgres-hostpath1
-        - hostPath:
-            path: /Users/aurelius/Documents/TCC - Chatbot UTFPR/dev/database/DDL
-          name: postgres-hostpath2
 status: {}

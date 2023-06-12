@@ -2,7 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   annotations:
-    kompose.cmd: kompose convert -o kubernetes --volumes=hostPath
+    kompose.cmd: kompose convert -f docker-compose-prod.yml -o kubernetes
+    kompose.service.type: loadbalancer
     kompose.version: 1.28.0 (HEAD)
   creationTimestamp: null
   labels:
@@ -13,12 +14,12 @@ spec:
   selector:
     matchLabels:
       io.kompose.service: rasa-server
-  strategy:
-    type: Recreate
+  strategy: {}
   template:
     metadata:
       annotations:
-        kompose.cmd: kompose convert -o kubernetes --volumes=hostPath
+        kompose.cmd: kompose convert -f docker-compose-prod.yml -o kubernetes
+        kompose.service.type: loadbalancer
         kompose.version: 1.28.0 (HEAD)
       creationTimestamp: null
       labels:
@@ -35,7 +36,7 @@ spec:
             - credentials.yml
             - -p
             - "5005"
-          image: aurelixv/rasa-server:latest
+          image: utfprchatbot.azurecr.io/rasa-server-prod:latest
           livenessProbe:
             exec:
               command:
@@ -43,19 +44,12 @@ spec:
                 - --fail
                 - http://0.0.0.0:5005/
             failureThreshold: 5
-            periodSeconds: 1
+            periodSeconds: 60
             timeoutSeconds: 5
           name: rasa-server
           ports:
             - containerPort: 5005
           resources: {}
-          volumeMounts:
-            - mountPath: /app
-              name: rasa-server-hostpath0
           workingDir: /app
       restartPolicy: Always
-      volumes:
-        - hostPath:
-            path: /Users/aurelius/Documents/TCC - Chatbot UTFPR/dev/bot
-          name: rasa-server-hostpath0
 status: {}
