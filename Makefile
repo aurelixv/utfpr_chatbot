@@ -13,8 +13,9 @@ clean:
 	docker compose down && \
 		docker compose up -d
 build:
-	docker compose build --no-cache && \
-		docker compose push
+	docker compose build --no-cache
+push:
+	docker compose push
 ngrok:
 	nohup ngrok http 5005 --config ./ngrok/ngrok.yml --log=stdout > ngrok/ngrok.log &
 update-webhook:
