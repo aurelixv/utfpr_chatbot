@@ -4,18 +4,18 @@ train:
 	docker run --name rasa-train -v "$(shell pwd)/bot:/app" aurelixv/rasa-server:latest train --fixed-model-name nlu_utfpr_chatbot && \
 		docker rm rasa-train
 up:
-	docker compose -f docker-compose-dev.yml up -d
+	docker compose up -d
 stop:
-	docker compose -f docker-compose-dev.yml stop
+	docker compose stop
 down:
 	docker compose down -v
 clean:
-	docker compose down -v && \
-		docker compose -f docker-compose-dev.yml up -d
+	docker compose down && \
+		docker compose up -d
 build:
-	docker compose -f docker-compose-prod.yml build --no-cache
+	docker compose build --no-cache
 push:
-	docker compose -f docker-compose-prod.yml push
+	docker compose push
 ngrok:
 	nohup ngrok http 5005 --config ./ngrok/ngrok.yml --log=stdout > ngrok/ngrok.log &
 update-webhook:

@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   annotations:
-    kompose.cmd: kompose convert -f docker-compose-prod.yml -o kubernetes
+    kompose.cmd: kompose convert -o kubernetes --volumes=hostPath
     kompose.version: 1.28.0 (HEAD)
   creationTimestamp: null
   labels:
@@ -13,11 +13,12 @@ spec:
   selector:
     matchLabels:
       io.kompose.service: rasa-actions
-  strategy: {}
+  strategy:
+    type: Recreate
   template:
     metadata:
       annotations:
-        kompose.cmd: kompose convert -f docker-compose-prod.yml -o kubernetes
+        kompose.cmd: kompose convert -o kubernetes --volumes=hostPath
         kompose.version: 1.28.0 (HEAD)
       creationTimestamp: null
       labels:
@@ -32,7 +33,7 @@ spec:
             - "5055"
             - --actions
             - actions
-          image: utfprchatbot.azurecr.io/rasa-actions-prod:latest
+          image: aurelixv/rasa-actions:latest
           livenessProbe:
             exec:
               command:
@@ -46,5 +47,17 @@ spec:
           ports:
             - containerPort: 5055
           resources: {}
+          volumeMounts:
+            - mountPath: /app/actions
+              name: rasa-actions-hostpath0
+            - mountPath: /app/endpoints.yml
+              name: rasa-actions-hostpath1
       restartPolicy: Always
+      volumes:
+        - hostPath:
+            path: /Users/aurelius/Documents/TCC - Chatbot UTFPR/dev/bot/actions
+          name: rasa-actions-hostpath0
+        - hostPath:
+            path: /Users/aurelius/Documents/TCC - Chatbot UTFPR/dev/bot/endpoints.yml
+          name: rasa-actions-hostpath1
 status: {}
