@@ -1,5 +1,6 @@
 # hide credentials
 bot/credentials_dev.yml
+ngrok/ngrok.yml
 
 # rasa cache folder
 bot/.rasa/
@@ -8,9 +9,6 @@ bot/.config/
 
 # vscode temp files
 .vscode/
-
-# trained models
-bot/models/*
 
 # python cache
 bot/actions/__pycache__/
