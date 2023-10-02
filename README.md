@@ -11,12 +11,15 @@
     - [Autor:  Aurélio Vinícius Cabral Funes](#autor--aurélio-vinícius-cabral-funes)
 - [Índice](#índice)
     - [Tecnologias Utilizadas](#tecnologias-utilizadas)
-  - [Tutorial para executar o Chatbot na máquina local](#tutorial-para-executar-o-chatbot-na-máquina-local)
+  - [Tutorial para executar o Chatbot na máquina local ou em máquina virtual](#tutorial-para-executar-o-chatbot-na-máquina-local-ou-em-máquina-virtual)
     - [0. Pré-requisitos](#0-pré-requisitos)
-    - [1. Clonar o repositório para a máquina local](#1-clonar-o-repositório-para-a-máquina-local)
-    - [2. Treinar modelo](#2-treinar-modelo)
-    - [3. Inicializar o ngrok](#3-inicializar-o-ngrok)
-    - [4. Subir e parar o bot](#4-subir-e-parar-o-bot)
+    - [Máquina Local](#máquina-local)
+    - [Máquina Virtual (Ubuntu 22.04)](#máquina-virtual-ubuntu-2204)
+    - [1. Clonar o repositório](#1-clonar-o-repositório)
+    - [2. Preencher credenciais necessárias](#2-preencher-credenciais-necessárias)
+    - [3. Treinar modelo (opcional)](#3-treinar-modelo-opcional)
+    - [4. Inicializar o ngrok](#4-inicializar-o-ngrok)
+    - [5. Subir e parar o bot](#5-subir-e-parar-o-bot)
     - [Extra: Subir versão limpa](#extra-subir-versão-limpa)
   - [Alterando credenciais do Telegram](#alterando-credenciais-do-telegram)
     - [Conversando com o Chatbot](#conversando-com-o-chatbot)
@@ -42,38 +45,78 @@
 - Docker
 - Docker Compose
 - Postgres
-<!-- - Heroku -->
 
-### Tutorial para executar o Chatbot na máquina local
+### Tutorial para executar o Chatbot na máquina local ou em máquina virtual
 
 #### 0. Pré-requisitos
-- Possuir o Docker instalado na máquina:
+#### Máquina Local
+- Possuir o Docker Desktop instalado:
     - https://www.docker.com/products/docker-desktop/
-- Possuir o ngrok instalado na máquina:
+- Possuir o ngrok instalado:
     - https://ngrok.com/download
     - Criar conta e preencher token no arquivo ngrok/ngrok.yml
-
+- Possuir o Python instalado
+    - https://www.python.org/downloads/
 - **Preferencialmente**: um terminal que consiga executar comandos Makefile. Caso contrário, consultar o arquivo Makefile e rodar os comandos diretamente no terminal, fazendo as adaptações locais necessárias.
 
-#### 1. Clonar o repositório para a máquina local
+#### Máquina Virtual (Ubuntu 22.04)
+- Instalação de Docker e Docker Compose:
+    - https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-22-04
+    - https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-compose-on-ubuntu-22-04
+- Possuir o ngrok instalado:
+    - https://ngrok.com/
+    - Criar conta e preencher token no arquivo ngrok/ngrok.yml
+    - Rodar o seguinte comando para instalar:
+    ```shell
+    $ sudo snap install ngrok
+    ```
+- Instalar o make
+    ```shell
+      $ sudo apt install make
+    ```
+- Instalar o Python
+  ```shell
+    $ sudo apt install python-is-python3
+  ```
+
+#### 1. Clonar o repositório
 ```shell
 $ git clone https://github.com/aurelixv/utfpr_chatbot
 ```
 
-#### 2. Treinar modelo
+Se desejar treinar um modelo, é necessário alterar o grupo da pasta **bot** para root, com o comando abaixo:
+```shell
+$ sudo chgrp -R bot root
+```
+
+#### 2. Preencher credenciais necessárias
+- Substituir texto **\<token\>** do campo do arquivo pela correspondente chave de acesso
+- **bot/credentials.yml**: preencher com o token de acesso do Telegram
+- **ngrok/ngrok.yml**: preencher com o token de acesso do ngrok
+
+#### 3. Treinar modelo (opcional)
 Obs: Certifique-se que o Docker esteja rodando antes de executar o comando.
 ```shell
 $ make train
 ```
 
-#### 3. Inicializar o ngrok
+#### 4. Inicializar o ngrok
 Necessário para abrir a porta 5005 da máquina local para comunicação do Chatbot com o Telegram. Utilizará as configurações presentes no arquivo ngrok/ngrok.yml
 ```shell
 $ make ngrok
-# Após rodar, copiar o endereço https e colar no arquivo credentials.yml
 ```
 
-#### 4. Subir e parar o bot
+Após, rodar o seguinte comando para atualizar o endereço gerado pelo ngrok:
+```shell
+$ make update-webhook
+```
+
+Ao terminar de utilizar a conexão, rodar o seguinte comando para desconectar sessão:
+```shell
+$ killall ngrok
+```
+
+#### 5. Subir e parar o bot
 Utilizando Docker Compose, sobe os containers necessários para o funcionamento do Chatbot: rasa, rasa-sdk, postgres e pgadmin. As imagens possuem personalizações e estão disponíveis no Docker Hub aurelixv.
 ```shell
 # Subir o bot
