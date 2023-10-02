@@ -78,6 +78,7 @@
   ```shell
     $ sudo apt install python-is-python3
   ```
+- Abrir porta 8888 para conexão ao pgadmin
 
 #### 1. Clonar o repositório
 ```shell
