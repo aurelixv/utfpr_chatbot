@@ -45,6 +45,7 @@
 - Docker
 - Docker Compose
 - Postgres
+- pgAdmin
 
 ### Tutorial para executar o Chatbot na máquina local ou em máquina virtual
 
