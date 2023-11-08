@@ -77,6 +77,25 @@ nlu:
     - [Alterar horario](internship_info)
     - [Mais informacoes contatos](internship_info)
 
+- intent: assistance
+  examples: |
+    - [informacoes] sobre auxilio(assistance_info)
+    - quero saber sobre auxilio estudantil
+    - como funciona o auxilio moradia
+    - me explique o auxilio alimentacao
+    - o que e o auxilio basico
+    - quais sao os [documentos] necessarios para o auxilio estudantil
+    - qual o [cronograma] para solicitar o auxilio estudantil
+
+- intent: inform_assistance_info
+  examples: |
+    - [informacoes](assistance_info)
+    - [elegibilidade](assistance_info)
+    - [cronograma](assistance_info)
+    - [inscricoes](assistance_info)
+    - [documentos](assistance_info)
+    - [contatos](assistance_info)
+
 - intent: chitchat/goodbye
   examples: |
     - tchau
@@ -160,6 +179,15 @@ nlu:
     - Mais informacoes contatos
     - Mais informações contatos
 
+- lookup: assistance_info
+  examples: |
+    - Informacoes
+    - Elegibilidade
+    - Cronograma
+    - Inscricoes
+    - Documentos
+    - Contatos
+
 - regex: internship_info
   examples: |
     - Informa[cç][oõ]es Gerais
@@ -168,6 +196,15 @@ nlu:
     - Relat[oó]rios
     - Alterar hor[aá]rio
     - Mais informa[cç][oõ]es contatos
+
+- regex: assistance_info
+  examples: |
+    - Informa[cç][oõ]es
+    - Elegibilidade
+    - Cronograma
+    - Inscri[cç][oõ]es
+    - Documentos
+    - Contatos
 
 # - lookup: internship_type
 #   examples: |

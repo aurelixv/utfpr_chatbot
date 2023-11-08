@@ -81,6 +81,40 @@ rules:
       - action: action_deactivate_loop
       - active_loop: null
 
+  - rule: activate assistance form
+    steps:
+      - intent: assistance   # intent that triggers form activation
+      - action: action_extract_assistance_type
+      - action: assistance_form      # run the form
+      - active_loop: assistance_form # this form is active
+
+  - rule: submit assistance when active form
+    condition:
+    - active_loop: assistance_form   # this form must be active
+    steps:
+      - action: assistance_form      # run the form
+      - active_loop: null            # the form is no longer active because it has been filled
+      - action: action_extract_assistance_type
+      - action: action_inform_assistance
+      - action: utter_did_that_help
+
+  - rule: submit assistance
+    steps:
+      - intent: inform_assistance_info
+      - action: action_extract_assistance_type
+      - action: action_inform_assistance
+      - action: utter_did_that_help
+
+  - rule: cancel assistance form
+    condition:
+    - active_loop: assistance_form   # this form must be active
+    steps:
+      - intent: cancel # cancels the form
+      - action: utter_cancel
+      - action: action_clear_slots
+      - action: action_deactivate_loop
+      - active_loop: null
+
   - rule: it did help
     steps:
       - intent: affirm

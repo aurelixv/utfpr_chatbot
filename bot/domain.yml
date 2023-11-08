@@ -4,6 +4,8 @@ actions:
   - action_get_schedule
   - action_inform_internship
   - action_extract_internship_type
+  - action_inform_assistance
+  - action_extract_assistance_type
   - action_clear_slots
 
 forms:
@@ -15,10 +17,15 @@ forms:
     required_slots:
         - internship_info
 
+  assistance_form:
+    required_slots:
+        - assistance_info
+
 entities:
   - campus
   # - internship_type
   - internship_info
+  - assistance_info
 
 slots:
   campus:
@@ -47,6 +54,26 @@ slots:
       - type: from_entity
         entity: internship_info
 
+  assistance_type:
+    type: text
+    influence_conversation: false
+    mappings:
+    - type: custom
+
+  assistance_info:
+    type: categorical
+    influence_conversation: false
+    values:
+      - informacoes
+      - elegibilidade
+      - cronograma
+      - inscricoes
+      - documentos
+      - contatos
+    mappings:
+      - type: from_entity
+        entity: assistance_info
+
 intents:
   - start
   - cancel
@@ -59,6 +86,8 @@ intents:
   - deny
   - internship
   - inform_internship_info
+  - assistance
+  - inform_assistance_info
 
 responses:
   utter_start:
@@ -126,6 +155,25 @@ responses:
         title: Cancelar
       button_type: vertical
       text: O que deseja saber sobre estágio?
+
+  utter_ask_assistance_info:
+    - buttons:
+      - payload: informacoes
+        title: Informações sobre auxílio
+      - payload: elegibilidade
+        title: Elegibilidade
+      - payload: cronograma
+        title: Cronograma
+      - payload: inscricoes
+        title: Inscrições
+      - payload: documentos
+        title: Documentos
+      - payload: contatos
+        title: Contatos
+      - payload: cancelar
+        title: Cancelar
+      button_type: vertical
+      text: O que deseja saber sobre auxílio estudantil?
 
   utter_did_that_help:
     - text: Isso ajudou você?
