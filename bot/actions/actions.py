@@ -280,8 +280,8 @@ class ActionInformInternship(Action):
     @staticmethod
     def get_internship_text(internship_info_id, internship_type_id):
         """
-        Function that receives an internship_info and queries the database to
-        return the corresponding internship_info_id
+        Function that receives an internship_info_id and internship_type_id and 
+        queries the database to return the corresponding internship_text
         """
         q_internship_text = """
             SELECT A.INTERNSHIP_INFO_ID,
@@ -397,7 +397,7 @@ class ActionInformAssistance(Action):
     @staticmethod
     def get_assistance_info_slot(tracker):
         """
-        Function that receives a tracker object and returns the internship_type_info
+        Function that receives a tracker object and returns the assistance_type_info
         """
         # retrieve slot
         assistance_info = tracker.get_slot('assistance_info')
@@ -409,90 +409,90 @@ class ActionInformAssistance(Action):
         return assistance_info
 
     @staticmethod
-    def get_internship_type_id(internship_type: Text):
+    def get_assistance_type_id(assistance_type: Text):
         """
-        Function that receives an internship_type and queries the database to
-        return the corresponding internship_type_id
+        Function that receives an assistance_type and queries the database to
+        return the corresponding assistance_type_id
         """
-        q_internship_type = """
-            SELECT A.INTERNSHIP_TYPE_ID,
-                A.INTERNSHIP_TYPE_NAME
-            FROM INTERNSHIP_TYPE A
-            WHERE A.INTERNSHIP_TYPE_NAME = (%s)
+        q_assistance_type = """
+            SELECT A.ASSISTANCE_TYPE_ID,
+                A.ASSISTANCE_TYPE_NAME
+            FROM ASSISTANCE_TYPE A
+            WHERE A.ASSISTANCE_TYPE_NAME = (%s)
             LIMIT 1
         """
 
         credentials = Credentials('endpoints.yml')
         conn = psql_connect(credentials)
 
-        internship_type_id = None
+        assistance_type_id = None
         if conn:
             with conn.cursor() as cur:
-                cur.execute(q_internship_type, (internship_type,))
+                cur.execute(q_assistance_type, (assistance_type,))
                 result = cur.fetchall()
 
             conn.close()
 
             if len(result) > 0:
-                internship_type_id = result[0][0]
+                assistance_type_id = result[0][0]
 
-        return internship_type_id
+        return assistance_type_id
 
     @staticmethod
-    def get_internship_info_id(internship_info: Text):
+    def get_assistance_info_id(assistance_info: Text):
         """
-        Function that receives an internship_info and queries the database to
-        return the corresponding internship_info_id
+        Function that receives an assistance_info and queries the database to
+        return the corresponding assistance_info_id
         """
-        q_internship_info = """
-            SELECT A.INTERNSHIP_INFO_ID,
-                A.INTERNSHIP_INFO_NAME,
-                A.INTERNSHIP_DESCRIPTION
-            FROM INTERNSHIP_INFO A
-            WHERE A.INTERNSHIP_INFO_NAME = (%s)
+        q_assistance_info = """
+            SELECT A.ASSISTANCE_INFO_ID,
+                A.ASSISTANCE_INFO_NAME,
+                A.ASSISTANCE_DESCRIPTION
+            FROM ASSISTANCE_INFO A
+            WHERE A.ASSISTANCE_INFO_NAME = (%s)
             LIMIT 1
         """
 
         credentials = Credentials('endpoints.yml')
         conn = psql_connect(credentials)
 
-        internship_info_id = None
+        assistance_info_id = None
         if conn:
             with conn.cursor() as cur:
-                cur.execute(q_internship_info, (internship_info,))
+                cur.execute(q_assistance_info, (assistance_info,))
                 result = cur.fetchall()
 
             conn.close()
 
             if len(result) > 0:
-                internship_info_id = result[0][0]
+                assistance_info_id = result[0][0]
 
-        return internship_info_id
+        return assistance_info_id
 
     @staticmethod
-    def get_internship_text(internship_info_id, internship_type_id):
+    def get_assistance_text(assistance_info_id, assistance_type_id):
         """
-        Function that receives an internship_info and queries the database to
-        return the corresponding internship_info_id
+        Function that receives an assistance_info_id and assistance_type_id and 
+        queries the database to return the corresponding assistance_text
         """
-        q_internship_text = """
-            SELECT A.INTERNSHIP_INFO_ID,
-                A.INTERNSHIP_TYPE_ID,
+        q_assistance_text = """
+            SELECT A.ASSISTANCE_INFO_ID,
+                A.ASSISTANCE_TYPE_ID,
                 A.UPDATE_TIMESTAMP,
                 A.INFO_TEXT
-            FROM INTERNSHIP_TEXT A
-            WHERE A.INTERNSHIP_INFO_ID = (%s)
-                AND A.INTERNSHIP_TYPE_ID = (%s)
+            FROM ASSISTANCE_TEXT A
+            WHERE A.ASSISTANCE_INFO_ID = (%s)
+                AND A.ASSISTANCE_TYPE_ID = (%s)
             LIMIT 1
         """
 
         credentials = Credentials('endpoints.yml')
         conn = psql_connect(credentials)
 
-        internship_text = None
+        assistance_text = None
         if conn:
             with conn.cursor() as cur:
-                cur.execute(q_internship_text, (internship_info_id, internship_type_id))
+                cur.execute(q_assistance_text, (assistance_info_id, assistance_type_id))
                 result = cur.fetchall()
 
             conn.close()
@@ -500,25 +500,26 @@ class ActionInformAssistance(Action):
             if len(result) > 0:
                 # pre-process to enable breaklines
                 if result[0][3]:
-                    internship_text = result[0][3].replace('\\n', '\n')
+                    assistance_text = result[0][3].replace('\\n', '\n')
 
-        return internship_text
+        return assistance_text
 
     async def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
         assistance_type = self.get_assistance_type_slot(tracker)
-        # assistance_type_id = self.get_assistance_type_id(assistance_type)
+        assistance_type_id = self.get_assistance_type_id(assistance_type)
         assistance_info = self.get_assistance_info_slot(tracker)
-        # assistance_info_id = self.get_assistance_info_id(assistance_info)
-        # assistance_text = self.get_assistance_text(assistance_info_id, assistance_type_id)
+        assistance_info_id = self.get_assistance_info_id(assistance_info)
+        assistance_text = self.get_assistance_text(assistance_info_id, assistance_type_id)
         intent = self.get_intent_name(tracker)
 
         # debug
         dispatcher.utter_message(text=f'intent: {intent}'\
-            + f'\aassistance_type: {assistance_type} id: {assistance_type}'\
-            + f'\aassistance_info: {assistance_info} id: {assistance_info}')
+            + f'\nassistance_type: {assistance_type} id: {assistance_type_id}'\
+            + f'\nassistance_info: {assistance_info} id: {assistance_info_id}'\
+            + f'\nassistance_text: {assistance_text}')
 
         # clears the internship_info slot
         return [SlotSet('assistance_info', None)]
