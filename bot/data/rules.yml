@@ -64,12 +64,10 @@ rules:
       - action: action_inform_internship
       - action: utter_did_that_help
 
-  - rule: submit internship
+  - rule: submit domain info
     steps:
-      - intent: inform_internship_info
-      - action: action_extract_internship_type
-      - action: action_inform_internship
-      - action: utter_did_that_help
+      - intent: inform_domain_info
+      - action: utter_start
 
   - rule: cancel internship form
     condition:
@@ -98,12 +96,12 @@ rules:
       - action: action_inform_assistance
       - action: utter_did_that_help
 
-  - rule: submit assistance
-    steps:
-      - intent: inform_assistance_info
-      - action: action_extract_assistance_type
-      - action: action_inform_assistance
-      - action: utter_did_that_help
+  # - rule: submit assistance
+  #   steps:
+  #     - intent: inform_domain_info
+  #     - action: action_extract_assistance_type
+  #     - action: action_inform_assistance
+  #     - action: utter_did_that_help
 
   - rule: cancel assistance form
     condition:

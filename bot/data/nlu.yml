@@ -55,46 +55,40 @@ nlu:
     - na universidade [Dois Vizinhos](campus)
     - [Londrina](campus)
 
+- intent: inform_domain_info
+  examples: |
+    - [diferenca](domain_info)
+    - [relatorios](domain_info)
+    - [horario](domain_info)
+    - [informacoes](domain_info)
+    - [elegibilidade](domain_info)
+    - [cronograma](domain_info)
+    - [inscricoes](domain_info)
+    - [documentos](domain_info)
+    - [contatos](domain_info)
+
 - intent: internship
   examples: |
-    - [informacoes](internship_info) sobre estágio
+    - [informacoes](domain_info) sobre estágio
     - quero saber sobre estagio
     - como funciona o estagio obrigatorio
     - onde encontro estágio não obrigatório
     - estagio nao obrigatorio
-    - [diferenca](internship_info) entre estagio
-    - [documentacao](internship_info) necessaria para estagio
-    - [relatorio](internship_info) de estagio
-    - alterar o meu [horario](internship_info) de estagio
-    - [contato](internship_info) para estagio
-
-- intent: inform_internship_info
-  examples: |
-    - [Informacoes Gerais](internship_info)
-    - [Diferenca](internship_info)
-    - [Documentacao](internship_info)
-    - [Relatorios](internship_info)
-    - [Alterar horario](internship_info)
-    - [Mais informacoes contatos](internship_info)
+    - [diferenca](domain_info) entre estagio
+    - [documentacao](domain_info) necessaria para estagio
+    - [relatorio](domain_info) de estagio
+    - alterar o meu [horario](domain_info) de estagio
+    - [contato](domain_info) para estagio
 
 - intent: assistance
   examples: |
-    - [informacoes] sobre auxilio(assistance_info)
+    - [informacoes](domain_info) sobre auxilio
     - quero saber sobre auxilio estudantil
     - como funciona o auxilio moradia
     - me explique o auxilio alimentacao
     - o que e o auxilio basico
-    - quais sao os [documentos] necessarios para o auxilio estudantil
-    - qual o [cronograma] para solicitar o auxilio estudantil
-
-- intent: inform_assistance_info
-  examples: |
-    - [informacoes](assistance_info)
-    - [elegibilidade](assistance_info)
-    - [cronograma](assistance_info)
-    - [inscricoes](assistance_info)
-    - [documentos](assistance_info)
-    - [contatos](assistance_info)
+    - quais sao os [documentos](domain_info) necessarios para o auxilio estudantil
+    - qual o [cronograma](domain_info) para solicitar o auxilio estudantil
 
 - intent: chitchat/goodbye
   examples: |
@@ -164,47 +158,33 @@ nlu:
     - Toledo
     - Ecoville
 
-- lookup: internship_info
+- lookup: info
   examples: |
-    - Informacoes Gerais
-    - Informações Gerais
-    - Diferenca
-    - Diferença
-    - Documentacao
-    - Documentação
-    - Relatorios
-    - Relatórios
-    - Alterar horario
-    - Alterar horário
-    - Mais informacoes contatos
-    - Mais informações contatos
+    - informacoes
+    - informações
+    - diferenca
+    - diferença
+    - relatorios
+    - relatórios
+    - horario
+    - horário
+    - contatos
+    - elegibilidade
+    - cronograma
+    - inscricoes
+    - inscrições
+    - documentos
 
-- lookup: assistance_info
+- regex: domain_info
   examples: |
-    - Informacoes
-    - Elegibilidade
-    - Cronograma
-    - Inscricoes
-    - Documentos
-    - Contatos
-
-- regex: internship_info
-  examples: |
-    - Informa[cç][oõ]es Gerais
-    - Diferen[cç]a
-    - Documenta[cç][aã]o
-    - Relat[oó]rios
-    - Alterar hor[aá]rio
-    - Mais informa[cç][oõ]es contatos
-
-- regex: assistance_info
-  examples: |
-    - Informa[cç][oõ]es
-    - Elegibilidade
-    - Cronograma
-    - Inscri[cç][oõ]es
-    - Documentos
-    - Contatos
+    - informa[cç][oõ]es
+    - diferen[cç]a
+    - documentos
+    - relat[oó]rios
+    - hor[aá]rio
+    - contatos
+    - elegibilidade
+    - cronograma
 
 # - lookup: internship_type
 #   examples: |

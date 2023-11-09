@@ -23,9 +23,7 @@ forms:
 
 entities:
   - campus
-  # - internship_type
-  - internship_info
-  - assistance_info
+  - domain_info
 
 slots:
   campus:
@@ -44,15 +42,15 @@ slots:
     type: categorical
     influence_conversation: false
     values:
-      - Informacoes Gerais
-      - Diferenca
-      - Documentacao
-      - Relatorios
-      - Alterar horario
-      - Mais informacoes contatos
+      - informacoes
+      - diferenca
+      - documentos
+      - relatorios
+      - horario
+      - contatos
     mappings:
       - type: from_entity
-        entity: internship_info
+        entity: domain_info
 
   assistance_type:
     type: text
@@ -72,7 +70,7 @@ slots:
       - contatos
     mappings:
       - type: from_entity
-        entity: assistance_info
+        entity: domain_info
 
 intents:
   - start
@@ -84,10 +82,9 @@ intents:
   - inform_campus
   - affirm
   - deny
+  - inform_domain_info
   - internship
-  - inform_internship_info
   - assistance
-  - inform_assistance_info
 
 responses:
   utter_start:
@@ -139,17 +136,17 @@ responses:
 
   utter_ask_internship_info:
     - buttons:
-      - payload: informacoes gerais
+      - payload: informacoes
         title: Informações Gerais
       - payload: diferenca
         title: Obrigatório vs Não Obrigatório
-      - payload: documentacao
+      - payload: documentos
         title: Documentação
       - payload: relatorios
         title: Relatórios
-      - payload: alterar horario
+      - payload: horario
         title: Alterar horário
-      - payload: mais informacoes
+      - payload: contatos
         title: Mais informações/Contatos
       - payload: cancelar
         title: Cancelar
