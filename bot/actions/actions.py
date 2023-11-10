@@ -53,26 +53,34 @@ def psql_connect(credentials: Credentials):
     except psycopg2.OperationalError:
         return None
 
+def get_tracker_slot(tracker, slot_name: Text):
+    """
+    Function that receives a tracker object and returns the specified slot
+    """
+    # retrieve slot
+    slot = tracker.get_slot(slot_name)
+
+    # pre process
+    if slot:
+        slot = unidecode(slot.upper())
+
+    return slot
+
+def get_intent_name(tracker):
+    """
+    Function that receives a tracker object and returns the intent name
+    """
+
+    logger.debug(tracker.latest_message)
+
+    return tracker.latest_message['intent']['name']
+
 class ActionGetSchedule(Action):
     """
     Handles the action_get_schedule action
     """
     def name(self) -> Text:
         return "action_get_schedule"
-
-    @staticmethod
-    def get_campus_slot(tracker):
-        """
-        Function that receives a tracker object and returns the campus slot
-        """
-        # retrieve slot
-        campus = tracker.get_slot('campus')
-
-        # pre process
-        if campus:
-            campus = unidecode(campus.upper())
-
-        return campus
 
     @staticmethod
     def get_schedule(campus: Text) -> Dict:
@@ -146,7 +154,7 @@ class ActionGetSchedule(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
-        campus = self.get_campus_slot(tracker)
+        campus = get_tracker_slot(tracker, 'campus')
         schedule = self.get_schedule(campus)
 
         if schedule:
@@ -177,44 +185,6 @@ class ActionInformInternship(Action):
     """
     def name(self) -> Text:
         return "action_inform_internship"
-
-    @staticmethod
-    def get_intent_name(tracker):
-        """
-        Function that receives a tracker object and returns the intent name
-        """
-
-        logger.debug(tracker.latest_message)
-
-        return tracker.latest_message['intent']['name']
-
-    @staticmethod
-    def get_internship_type_slot(tracker):
-        """
-        Function that receives a tracker object and returns the internship_type_slot
-        """
-        # retrieve slot
-        internship_type = tracker.get_slot('internship_type')
-
-        # pre process
-        if internship_type:
-            internship_type = unidecode(internship_type.upper())
-
-        return internship_type
-
-    @staticmethod
-    def get_internship_info_slot(tracker):
-        """
-        Function that receives a tracker object and returns the internship_type_info
-        """
-        # retrieve slot
-        internship_info = tracker.get_slot('internship_info')
-
-        # pre process
-        if internship_info:
-            internship_info = unidecode(internship_info.upper())
-
-        return internship_info
 
     @staticmethod
     def get_internship_type_id(internship_type: Text):
@@ -316,12 +286,12 @@ class ActionInformInternship(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
-        internship_type = self.get_internship_type_slot(tracker)
+        internship_type = get_tracker_slot(tracker, 'internship_type')
         internship_type_id = self.get_internship_type_id(internship_type)
-        internship_info = self.get_internship_info_slot(tracker)
+        internship_info = get_tracker_slot(tracker, 'domain_info')
         internship_info_id = self.get_internship_info_id(internship_info)
         internship_text = self.get_internship_text(internship_info_id, internship_type_id)
-        intent = self.get_intent_name(tracker)
+        intent = get_intent_name(tracker)
 
         # debug
         dispatcher.utter_message(text=f'intent: {intent}'\
@@ -330,7 +300,7 @@ class ActionInformInternship(Action):
             + f'\ninternship_text: {internship_text}')
 
         # clears the internship_info slot
-        return [SlotSet('internship_info', None)]
+        return [SlotSet('domain_info', None)]
 
 class ActionExtractInternshipType(Action):
     """
@@ -369,44 +339,6 @@ class ActionInformAssistance(Action):
     """
     def name(self) -> Text:
         return "action_inform_assistance"
-
-    @staticmethod
-    def get_intent_name(tracker):
-        """
-        Function that receives a tracker object and returns the intent name
-        """
-
-        logger.debug(tracker.latest_message)
-
-        return tracker.latest_message['intent']['name']
-
-    @staticmethod
-    def get_assistance_type_slot(tracker):
-        """
-        Function that receives a tracker object and returns the assistance_type_slot
-        """
-        # retrieve slot
-        assistance_type = tracker.get_slot('assistance_type')
-
-        # pre process
-        if assistance_type:
-            assistance_type = unidecode(assistance_type.upper())
-
-        return assistance_type
-
-    @staticmethod
-    def get_assistance_info_slot(tracker):
-        """
-        Function that receives a tracker object and returns the assistance_type_info
-        """
-        # retrieve slot
-        assistance_info = tracker.get_slot('assistance_info')
-
-        # pre process
-        if assistance_info:
-            assistance_info = unidecode(assistance_info.upper())
-
-        return assistance_info
 
     @staticmethod
     def get_assistance_type_id(assistance_type: Text):
@@ -508,12 +440,12 @@ class ActionInformAssistance(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
-        assistance_type = self.get_assistance_type_slot(tracker)
+        assistance_type = get_tracker_slot(tracker, 'assistance_type')
         assistance_type_id = self.get_assistance_type_id(assistance_type)
-        assistance_info = self.get_assistance_info_slot(tracker)
+        assistance_info = get_tracker_slot(tracker, 'domain_info')
         assistance_info_id = self.get_assistance_info_id(assistance_info)
         assistance_text = self.get_assistance_text(assistance_info_id, assistance_type_id)
-        intent = self.get_intent_name(tracker)
+        intent = get_intent_name(tracker)
 
         # debug
         dispatcher.utter_message(text=f'intent: {intent}'\
@@ -522,7 +454,7 @@ class ActionInformAssistance(Action):
             + f'\nassistance_text: {assistance_text}')
 
         # clears the internship_info slot
-        return [SlotSet('assistance_info', None)]
+        return [SlotSet('domain_info', None)]
 
 class ActionExtractAssistanceType(Action):
     """

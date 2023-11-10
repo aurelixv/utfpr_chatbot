@@ -11,12 +11,6 @@ rules:
     - intent: faq
     - action: utter_faq
 
-  # - rule: respond to internship info
-  #   steps:
-  #   - intent: internship
-  #   - action: utter_internship
-  #   - action: action_inform_internship
-
   - rule: respond to chitchat
     steps:
     - intent: chitchat
@@ -60,14 +54,8 @@ rules:
     steps:
       - action: internship_form      # run the form
       - active_loop: null            # the form is no longer active because it has been filled
-      - action: action_extract_internship_type
       - action: action_inform_internship
       - action: utter_did_that_help
-
-  - rule: submit domain info
-    steps:
-      - intent: inform_domain_info
-      - action: utter_start
 
   - rule: cancel internship form
     condition:
@@ -92,16 +80,8 @@ rules:
     steps:
       - action: assistance_form      # run the form
       - active_loop: null            # the form is no longer active because it has been filled
-      - action: action_extract_assistance_type
       - action: action_inform_assistance
       - action: utter_did_that_help
-
-  # - rule: submit assistance
-  #   steps:
-  #     - intent: inform_domain_info
-  #     - action: action_extract_assistance_type
-  #     - action: action_inform_assistance
-  #     - action: utter_did_that_help
 
   - rule: cancel assistance form
     condition:
@@ -112,6 +92,11 @@ rules:
       - action: action_clear_slots
       - action: action_deactivate_loop
       - active_loop: null
+
+  - rule: submit domain info
+    steps:
+      - intent: inform_domain_info
+      - action: utter_start2
 
   - rule: it did help
     steps:
@@ -127,6 +112,7 @@ rules:
     steps:
     - intent: nlu_fallback
     - action: utter_please_rephrase
+    - action: action_clear_slots
     - action: action_deactivate_loop
     - active_loop: null
 

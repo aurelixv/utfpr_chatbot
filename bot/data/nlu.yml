@@ -74,10 +74,10 @@ nlu:
     - como funciona o estagio obrigatorio
     - onde encontro estágio não obrigatório
     - estagio nao obrigatorio
-    - [diferenca](domain_info) entre estagio
+    - [diferenca](domain_info) entre estagio obrigatorio e nao obrigatorio
     - [documentacao](domain_info) necessaria para estagio
-    - [relatorio](domain_info) de estagio
-    - alterar o meu [horario](domain_info) de estagio
+    - [relatorio](domain_info) de estagio obrigatorio
+    - alterar o meu [horario](domain_info) de estagio nao obrigatorio
     - [contato](domain_info) para estagio
 
 - intent: assistance
@@ -121,6 +121,38 @@ nlu:
     - quero dar risada
     - algo engraçado
 
+- intent: chitchat/mood_great
+  examples: |
+    - perfeito
+    - ótimo
+    - excelente
+    - maravilha
+    - estou bem
+    - me sinto bem
+    - muito bem
+    - estou feliz
+    - me sinto feliz
+    - o dia hoje esta bom
+
+- intent: chitchat/mood_unhappy
+  examples: |
+    - horrível
+    - estou triste
+    - não me sinto bem
+    - estou desapontado
+    - muito triste
+    - triste
+    - infeliz
+    - nao estou bem
+    - extremamente triste
+
+- intent: chitchat/bot_challenge
+  examples: |
+    - você é um robô?
+    - você é humano?
+    - estou falando com um robô?
+    - estou falando com um humano?
+
 - intent: faq/info
   examples: |
     - UTFPR
@@ -158,7 +190,7 @@ nlu:
     - Toledo
     - Ecoville
 
-- lookup: info
+- lookup: domain_info
   examples: |
     - informacoes
     - informações
@@ -186,18 +218,6 @@ nlu:
     - elegibilidade
     - cronograma
 
-# - lookup: internship_type
-#   examples: |
-#     - estágio obrigatório
-#     - estagio obrigatorio
-#     - estágio não obrigatório
-#     - estagio nao obrigatorio
-
-# - regex: internship_type
-#   examples: |
-#     - est[aá]gio obrita[oó]rio
-#     - est[aá]gio n[aã]o obrita[oó]rio
-
 - intent: affirm
   examples: |
     - sim
@@ -215,32 +235,3 @@ nlu:
     - nunca
     - não concordo
     - sem condição
-
-# - intent: chitchat/mood_great
-#   examples: |
-#     - perfeito
-#     - ótimo
-#     - excelente
-#     - maravilha
-#     - estou bem
-#     - me sinto bem
-#     - muito bem
-
-# - intent: chitchat/mood_unhappy
-#   examples: |
-#     - horrível
-#     - estou triste
-#     - não me sinto bem
-#     - estou desapontado
-#     - muito triste
-#     - triste
-#     - infeliz
-#     - nao estou bem
-#     - extremamente triste
-
-# - intent: chitchat/bot_challenge
-#   examples: |
-#     - você é um robô?
-#     - você é humano?
-#     - estou falando com um robô?
-#     - estou falando com um humano?
