@@ -19,10 +19,12 @@ import psycopg2
 # For debugging code
 logger = logging.getLogger(__name__)
 
+
 class Credentials:
     """
     Parses the credentials from yaml file
     """
+
     def __init__(self, file_path: str):
         # open credentials file
         with open(file_path, encoding='utf-8') as file:
@@ -38,20 +40,22 @@ class Credentials:
         return f'\nhost: {self.host}\ndatabase: {self.database}\n' \
             f'user: {self.user}\npassword: {self.password}'
 
+
 def psql_connect(credentials: Credentials):
     """
     Establishes a connection to postgres
     """
     try:
         conn = psycopg2.connect(
-            host = credentials.host,
-            database = credentials.database,
-            user = credentials.user,
-            password = credentials.password
+            host=credentials.host,
+            database=credentials.database,
+            user=credentials.user,
+            password=credentials.password
         )
         return conn
     except psycopg2.OperationalError:
         return None
+
 
 def get_tracker_slot(tracker, slot_name: Text):
     """
@@ -66,6 +70,7 @@ def get_tracker_slot(tracker, slot_name: Text):
 
     return slot
 
+
 def get_intent_name(tracker):
     """
     Function that receives a tracker object and returns the intent name
@@ -75,10 +80,12 @@ def get_intent_name(tracker):
 
     return tracker.latest_message['intent']['name']
 
+
 class ActionGetSchedule(Action):
     """
     Handles the action_get_schedule action
     """
+
     def name(self) -> Text:
         return "action_get_schedule"
 
@@ -151,8 +158,8 @@ class ActionGetSchedule(Action):
         return None
 
     async def run(self, dispatcher: CollectingDispatcher,
-            tracker: Tracker,
-            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+                  tracker: Tracker,
+                  domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
         campus = get_tracker_slot(tracker, 'campus')
         schedule = self.get_schedule(campus)
@@ -172,19 +179,21 @@ class ActionGetSchedule(Action):
                     f"{phases[phase]['end_hour']} horas.\n\n"
 
             dispatcher.utter_message(text=response)
-            dispatcher.utter_message(text='Fonte dos dados: ' \
-                    + 'https://portal.utfpr.edu.br/secretaria/matricula/cronograma-de-matricula')
+            dispatcher.utter_message(text='Fonte dos dados: '
+                                     + 'https://portal.utfpr.edu.br/secretaria/matricula/cronograma-de-matricula')
         else:
-            dispatcher.utter_message(text="Me desculpe, mas não consegui localizar o "\
-                f"cronograma de matrícula de veteranos para o campus {campus.title()}.")
+            dispatcher.utter_message(text="Me desculpe, mas não consegui localizar o "
+                                     f"cronograma de matrícula de veteranos para o campus {campus.title()}.")
 
         # clears the campus slot
         return [SlotSet('campus', None)]
+
 
 class ActionInformInternship(Action):
     """
     Handles the action_inform_internship action
     """
+
     def name(self) -> Text:
         return "action_inform_internship"
 
@@ -272,7 +281,8 @@ class ActionInformInternship(Action):
         internship_text = None
         if conn:
             with conn.cursor() as cur:
-                cur.execute(q_internship_text, (internship_info_id, internship_type_id))
+                cur.execute(q_internship_text,
+                            (internship_info_id, internship_type_id))
                 result = cur.fetchall()
 
             conn.close()
@@ -285,8 +295,8 @@ class ActionInformInternship(Action):
         return internship_text
 
     async def run(self, dispatcher: CollectingDispatcher,
-            tracker: Tracker,
-            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+                  tracker: Tracker,
+                  domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
         internship_type = get_tracker_slot(tracker, 'internship_type')
         internship_type_id = self.get_internship_type_id(internship_type)
@@ -300,30 +310,34 @@ class ActionInformInternship(Action):
         #     + f'\ninternship_info: {internship_info} id: {internship_info_id}'
 
         if internship_info_id is None:
-            dispatcher.utter_message(text='Me desculpe, ainda não sei informar a '\
+            dispatcher.utter_message(text='Me desculpe, ainda não sei informar a '
                                      + f'respeito de {internship_info} para estágios.')
         else:
             if internship_type_id is None:
                 internship_type_id = 1
 
-            internship_text = self.get_internship_text(internship_info_id, internship_type_id)
+            internship_text = self.get_internship_text(
+                internship_info_id, internship_type_id)
 
             dispatcher.utter_message(text=internship_text)
-            dispatcher.utter_message(text='Fonte dos dados: https://portal.utfpr.edu.br/estagios')
+            dispatcher.utter_message(
+                text='Fonte dos dados: https://portal.utfpr.edu.br/estagios')
 
         # clears the internship_info slot
         return [SlotSet('domain_info', None)]
+
 
 class ActionExtractInternshipType(Action):
     """
     Handles the action_extract_internship_type action
     """
+
     def name(self) -> Text:
         return "action_extract_internship_type"
 
     async def run(self, dispatcher: CollectingDispatcher,
-            tracker: Tracker,
-            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+                  tracker: Tracker,
+                  domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
         # retrieve last user message
         latest_message = tracker.latest_message['text']
@@ -345,10 +359,12 @@ class ActionExtractInternshipType(Action):
 
         return [SlotSet('internship_type', old_internship_type)]
 
+
 class ActionInformAssistance(Action):
     """
     Handles the action_inform_assistance action
     """
+
     def name(self) -> Text:
         return "action_inform_assistance"
 
@@ -436,7 +452,8 @@ class ActionInformAssistance(Action):
         assistance_text = None
         if conn:
             with conn.cursor() as cur:
-                cur.execute(q_assistance_text, (assistance_info_id, assistance_type_id))
+                cur.execute(q_assistance_text,
+                            (assistance_info_id, assistance_type_id))
                 result = cur.fetchall()
 
             conn.close()
@@ -449,8 +466,8 @@ class ActionInformAssistance(Action):
         return assistance_text
 
     async def run(self, dispatcher: CollectingDispatcher,
-            tracker: Tracker,
-            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+                  tracker: Tracker,
+                  domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
         assistance_type = get_tracker_slot(tracker, 'assistance_type')
         assistance_type_id = self.get_assistance_type_id(assistance_type)
@@ -464,32 +481,35 @@ class ActionInformAssistance(Action):
         #     + f'\nassistance_info: {assistance_info} id: {assistance_info_id}'
 
         if assistance_info_id is None:
-            dispatcher.utter_message(text='Me desculpe, ainda não sei informar a '\
+            dispatcher.utter_message(text='Me desculpe, ainda não sei informar a '
                                      + f'respeito de {assistance_info} para auxílio estudantil.')
         else:
             if assistance_type_id is None:
                 assistance_type_id = 1
 
-            assistance_text = self.get_assistance_text(assistance_info_id, assistance_type_id)
+            assistance_text = self.get_assistance_text(
+                assistance_info_id, assistance_type_id)
 
             dispatcher.utter_message(text=assistance_text)
-            dispatcher.utter_message(text='Fonte dos dados: '\
-                + 'https://portal.utfpr.edu.br/editais/assessoria-estudantil/reitoria/'\
-                + 'processo-de-selecao-do-auxilio-estudantil-2023-1')
+            dispatcher.utter_message(text='Fonte dos dados: '
+                                     + 'https://portal.utfpr.edu.br/editais/assessoria-estudantil/reitoria/'
+                                     + 'processo-de-selecao-do-auxilio-estudantil-2023-1')
 
         # clears the internship_info slot
         return [SlotSet('domain_info', None)]
+
 
 class ActionExtractAssistanceType(Action):
     """
     Handles the action_extract_internship_type action
     """
+
     def name(self) -> Text:
         return "action_extract_assistance_type"
 
     async def run(self, dispatcher: CollectingDispatcher,
-            tracker: Tracker,
-            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+                  tracker: Tracker,
+                  domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
         # retrieve last user message
         latest_message = tracker.latest_message['text']
@@ -513,15 +533,17 @@ class ActionExtractAssistanceType(Action):
 
         return [SlotSet('assistance_type', old_assistance_type)]
 
+
 class ActionClearSlots(Action):
     """
     Handles the action_clear_slots action
     """
+
     def name(self) -> Text:
         return "action_clear_slots"
 
     async def run(self, dispatcher: CollectingDispatcher,
-            tracker: Tracker,
-            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+                  tracker: Tracker,
+                  domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
         return [AllSlotsReset()]
