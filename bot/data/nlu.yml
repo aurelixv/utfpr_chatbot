@@ -41,6 +41,8 @@ nlu:
     - qual a data da matricula para o campus [Curitiba](campus)
     - cronograma do campus [Dois Vizinhos](campus)
     - quando começa a matrícula em [medianeira](campus)
+    - poderia me informar sobre a matrícula no campus [Pato Branco](campus)
+    - quero informações de matrícula em [apucarana](campus)
 
 - intent: inform_campus
   examples: |
