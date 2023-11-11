@@ -229,7 +229,7 @@ class ActionInformInternship(Action):
                 A.INTERNSHIP_INFO_NAME,
                 A.INTERNSHIP_DESCRIPTION
             FROM INTERNSHIP_INFO A
-            WHERE A.INTERNSHIP_INFO_NAME = (%s)
+            WHERE A.INTERNSHIP_INFO_NAME LIKE (%s)
             LIMIT 1
         """
 
@@ -239,7 +239,7 @@ class ActionInformInternship(Action):
         internship_info_id = None
         if conn:
             with conn.cursor() as cur:
-                cur.execute(q_internship_info, (internship_info,))
+                cur.execute(q_internship_info, (f'%{internship_info}%',))
                 result = cur.fetchall()
 
             conn.close()
@@ -393,7 +393,7 @@ class ActionInformAssistance(Action):
                 A.ASSISTANCE_INFO_NAME,
                 A.ASSISTANCE_DESCRIPTION
             FROM ASSISTANCE_INFO A
-            WHERE A.ASSISTANCE_INFO_NAME = (%s)
+            WHERE A.ASSISTANCE_INFO_NAME LIKE (%s)
             LIMIT 1
         """
 
@@ -403,7 +403,7 @@ class ActionInformAssistance(Action):
         assistance_info_id = None
         if conn:
             with conn.cursor() as cur:
-                cur.execute(q_assistance_info, (assistance_info,))
+                cur.execute(q_assistance_info, (f'%{assistance_info}%',))
                 result = cur.fetchall()
 
             conn.close()

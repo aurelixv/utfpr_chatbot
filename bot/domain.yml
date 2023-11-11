@@ -16,7 +16,6 @@ forms:
       - internship
       - assistance
       - inform_domain_info
-      - clear
       - cancel
       - start
     required_slots:
@@ -29,7 +28,6 @@ forms:
       - enrollment_schedule
       - assistance
       - inform_campus
-      - clear
       - cancel
       - start
     required_slots:
@@ -42,7 +40,6 @@ forms:
       - enrollment_schedule
       - internship
       - inform_campus
-      - clear
       - cancel
       - start
     required_slots:
@@ -82,7 +79,6 @@ slots:
 intents:
   - start
   - cancel
-  - clear
   - chitchat
   - faq
   - enrollment_schedule
@@ -138,12 +134,6 @@ responses:
       - text: Estou à disposição...
       - text: Às suas ordens.
 
-  utter_chitchat/fun_fact:
-      - text: Você sabia que...
-
-  utter_chitchat/joke:
-      - text: Piada
-
   utter_chitchat/bot_challenge:
     - text: Eu sou um assistente virtual construído para auxiliar com dúvidas à respeito da UTFPR.
 
@@ -157,7 +147,7 @@ responses:
     - text: "A Universidade Tecnológica Federal do Paraná (UTFPR) possui 13 câmpus no estado do Paraná, totalizando 2549 professores, 1176 técnicos administrativos e mais de 32 mil estudantes.\n\nSaiba mais em: https://portal.utfpr.edu.br/institucional/sobre-a-utfpr-1"
 
   utter_faq/portal:
-    - text: Portal do aluno
+    - text: "Você consegue acessar o portal do aluno pelo seguinte link: https://portal.utfpr.edu.br/alunos/portal-do-aluno"
 
   utter_ask_campus:
     - text: Para qual campus?

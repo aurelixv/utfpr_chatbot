@@ -126,9 +126,3 @@ rules:
       - intent: cancel
       - action: utter_clear
       - action: action_clear_slots
-
-  - rule: clear
-    steps:
-      - intent: clear
-      - action: utter_clear
-      - action: action_clear_slots

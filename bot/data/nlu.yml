@@ -33,12 +33,6 @@ nlu:
     - parar
     - sair
 
-- intent: clear
-  examples: |
-    - /limpar
-    - limpar
-    - clear
-
 - intent: enrollment_schedule
   examples: |
     - quero o cronograma de matricula
@@ -106,20 +100,6 @@ nlu:
     - valeu
     - me ajudou bastante
     - foi muito util
-
-- intent: chitchat/fun_fact
-  examples: |
-    - curiosidade
-    - me conte algo diferente
-    - voce sabia
-    - quero algo interessante
-
-- intent: chitchat/joke
-  examples: |
-    - piada
-    - me conte uma piada
-    - quero dar risada
-    - algo engraçado
 
 - intent: chitchat/mood_great
   examples: |
@@ -227,6 +207,9 @@ nlu:
     - certeza
     - parece bom
     - correto
+    - ajudou
+    - sim, me ajudou
+    - ajudou sim
 
 - intent: deny
   examples: |
@@ -235,3 +218,5 @@ nlu:
     - nunca
     - não concordo
     - sem condição
+    - nao ajudou
+    - não ajudou
