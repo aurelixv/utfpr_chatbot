@@ -93,9 +93,14 @@ rules:
       - action: action_deactivate_loop
       - active_loop: null
 
-  - rule: submit domain info
+  - rule: inform domain info withou form
     steps:
       - intent: inform_domain_info
+      - action: utter_start2
+
+  - rule: inform campus without form
+    steps:
+      - intent: inform_campus
       - action: utter_start2
 
   - rule: it did help

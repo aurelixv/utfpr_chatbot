@@ -172,6 +172,8 @@ class ActionGetSchedule(Action):
                     f"{phases[phase]['end_hour']} horas.\n\n"
 
             dispatcher.utter_message(text=response)
+            dispatcher.utter_message(text='Fonte dos dados: ' \
+                    + 'https://portal.utfpr.edu.br/secretaria/matricula/cronograma-de-matricula')
         else:
             dispatcher.utter_message(text="Me desculpe, mas não consegui localizar o "\
                 f"cronograma de matrícula de veteranos para o campus {campus.title()}.")
@@ -290,14 +292,24 @@ class ActionInformInternship(Action):
         internship_type_id = self.get_internship_type_id(internship_type)
         internship_info = get_tracker_slot(tracker, 'domain_info')
         internship_info_id = self.get_internship_info_id(internship_info)
-        internship_text = self.get_internship_text(internship_info_id, internship_type_id)
-        intent = get_intent_name(tracker)
 
         # debug
-        dispatcher.utter_message(text=f'intent: {intent}'\
-            + f'\ninternship_type: {internship_type} id: {internship_type_id}'\
-            + f'\ninternship_info: {internship_info} id: {internship_info_id}'\
-            + f'\ninternship_text: {internship_text}')
+        # intent = get_intent_name(tracker)
+        # dispatcher.utter_message(text=f'intent: {intent}'\
+        #     + f'\ninternship_type: {internship_type} id: {internship_type_id}'\
+        #     + f'\ninternship_info: {internship_info} id: {internship_info_id}'
+
+        if internship_info_id is None:
+            dispatcher.utter_message(text='Me desculpe, ainda não sei informar a '\
+                                     + f'respeito de {internship_info} para estágios.')
+        else:
+            if internship_type_id is None:
+                internship_type_id = 1
+
+            internship_text = self.get_internship_text(internship_info_id, internship_type_id)
+
+            dispatcher.utter_message(text=internship_text)
+            dispatcher.utter_message(text='Fonte dos dados: https://portal.utfpr.edu.br/estagios')
 
         # clears the internship_info slot
         return [SlotSet('domain_info', None)]
@@ -444,14 +456,26 @@ class ActionInformAssistance(Action):
         assistance_type_id = self.get_assistance_type_id(assistance_type)
         assistance_info = get_tracker_slot(tracker, 'domain_info')
         assistance_info_id = self.get_assistance_info_id(assistance_info)
-        assistance_text = self.get_assistance_text(assistance_info_id, assistance_type_id)
-        intent = get_intent_name(tracker)
 
         # debug
-        dispatcher.utter_message(text=f'intent: {intent}'\
-            + f'\nassistance_type: {assistance_type} id: {assistance_type_id}'\
-            + f'\nassistance_info: {assistance_info} id: {assistance_info_id}'\
-            + f'\nassistance_text: {assistance_text}')
+        # intent = get_intent_name(tracker)
+        # dispatcher.utter_message(text=f'intent: {intent}'\
+        #     + f'\nassistance_type: {assistance_type} id: {assistance_type_id}'\
+        #     + f'\nassistance_info: {assistance_info} id: {assistance_info_id}'
+
+        if assistance_info_id is None:
+            dispatcher.utter_message(text='Me desculpe, ainda não sei informar a '\
+                                     + f'respeito de {assistance_info} para auxílio estudantil.')
+        else:
+            if assistance_type_id is None:
+                assistance_type_id = 1
+
+            assistance_text = self.get_assistance_text(assistance_info_id, assistance_type_id)
+
+            dispatcher.utter_message(text=assistance_text)
+            dispatcher.utter_message(text='Fonte dos dados: '\
+                + 'https://portal.utfpr.edu.br/editais/assessoria-estudantil/reitoria/'\
+                + 'processo-de-selecao-do-auxilio-estudantil-2023-1')
 
         # clears the internship_info slot
         return [SlotSet('domain_info', None)]
