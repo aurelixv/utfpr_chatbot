@@ -1,8 +1,14 @@
-.PHONY: train up stop down clean build push ngrok update-webhook clear-bot-cache ignore-credentials
+.PHONY: train validate test up stop down clean build push ngrok update-webhook clear-bot-cache ignore-credentials
 
 train:
 	docker run --name rasa-train -v "$(shell pwd)/bot:/app" aurelixv/rasa-server:latest train --fixed-model-name nlu_utfpr_chatbot && \
 		docker rm rasa-train
+validate:
+	docker run --name rasa-validate -v "$(shell pwd)/bot:/app" aurelixv/rasa-server:latest data validate && \
+		docker rm rasa-validate
+test:
+	docker run --name rasa-test -v "$(shell pwd)/bot:/app" aurelixv/rasa-server:latest test && \
+		docker rm rasa-test
 up:
 	docker compose up -d
 stop:

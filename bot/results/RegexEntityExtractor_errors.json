@@ -1,0 +1,213 @@
+[
+  {
+    "text": "quero o cronograma de matricula",
+    "entities": [],
+    "predicted_entities": [
+      {
+        "entity": "domain_info",
+        "start": 8,
+        "end": 18,
+        "value": "cronograma",
+        "extractor": "RegexEntityExtractor",
+        "processors": [
+          "EntitySynonymMapper"
+        ]
+      },
+      {
+        "entity": "domain_info",
+        "start": 8,
+        "end": 18,
+        "value": "cronograma",
+        "extractor": "RegexEntityExtractor",
+        "processors": [
+          "EntitySynonymMapper"
+        ]
+      }
+    ]
+  },
+  {
+    "text": "cronograma do campus Dois Vizinhos",
+    "entities": [
+      {
+        "start": 21,
+        "end": 34,
+        "value": "Dois Vizinhos",
+        "entity": "campus"
+      }
+    ],
+    "predicted_entities": [
+      {
+        "entity": "domain_info",
+        "start": 0,
+        "end": 10,
+        "value": "cronograma",
+        "extractor": "RegexEntityExtractor",
+        "processors": [
+          "EntitySynonymMapper"
+        ]
+      },
+      {
+        "entity": "campus",
+        "start": 21,
+        "end": 34,
+        "value": "Dois Vizinhos",
+        "extractor": "RegexEntityExtractor",
+        "processors": [
+          "EntitySynonymMapper"
+        ]
+      },
+      {
+        "entity": "domain_info",
+        "start": 0,
+        "end": 10,
+        "value": "cronograma",
+        "extractor": "RegexEntityExtractor",
+        "processors": [
+          "EntitySynonymMapper"
+        ]
+      },
+      {
+        "entity": "domain_info",
+        "start": 0,
+        "end": 10,
+        "confidence_entity": 0.6136930584907532,
+        "value": "cronograma",
+        "extractor": "DIETClassifier",
+        "processors": [
+          "EntitySynonymMapper"
+        ]
+      },
+      {
+        "entity": "campus",
+        "start": 21,
+        "end": 34,
+        "confidence_entity": 0.9950305223464966,
+        "value": "Dois Vizinhos",
+        "extractor": "DIETClassifier",
+        "processors": [
+          "EntitySynonymMapper"
+        ]
+      }
+    ]
+  },
+  {
+    "text": "quero informações de matrícula em apucarana",
+    "entities": [
+      {
+        "start": 34,
+        "end": 43,
+        "value": "apucarana",
+        "entity": "campus"
+      }
+    ],
+    "predicted_entities": [
+      {
+        "entity": "domain_info",
+        "start": 6,
+        "end": 17,
+        "value": "informações",
+        "extractor": "RegexEntityExtractor"
+      },
+      {
+        "entity": "campus",
+        "start": 34,
+        "end": 43,
+        "value": "apucarana",
+        "extractor": "RegexEntityExtractor",
+        "processors": [
+          "EntitySynonymMapper"
+        ]
+      },
+      {
+        "entity": "domain_info",
+        "start": 6,
+        "end": 17,
+        "value": "informações",
+        "extractor": "RegexEntityExtractor"
+      },
+      {
+        "entity": "campus",
+        "start": 34,
+        "end": 43,
+        "confidence_entity": 0.9961627721786499,
+        "value": "apucarana",
+        "extractor": "DIETClassifier",
+        "processors": [
+          "EntitySynonymMapper"
+        ]
+      }
+    ]
+  },
+  {
+    "text": "documentacao necessaria para estagio",
+    "entities": [
+      {
+        "start": 0,
+        "end": 12,
+        "value": "documentacao",
+        "entity": "domain_info"
+      }
+    ],
+    "predicted_entities": [
+      {
+        "entity": "domain_info",
+        "start": 0,
+        "end": 12,
+        "confidence_entity": 0.996871829032898,
+        "value": "documentacao",
+        "extractor": "DIETClassifier",
+        "processors": [
+          "EntitySynonymMapper"
+        ]
+      }
+    ]
+  },
+  {
+    "text": "relatorio de estagio obrigatorio",
+    "entities": [
+      {
+        "start": 0,
+        "end": 9,
+        "value": "relatorio",
+        "entity": "domain_info"
+      }
+    ],
+    "predicted_entities": [
+      {
+        "entity": "domain_info",
+        "start": 0,
+        "end": 9,
+        "confidence_entity": 0.9971766471862793,
+        "value": "relatorio",
+        "extractor": "DIETClassifier",
+        "processors": [
+          "EntitySynonymMapper"
+        ]
+      }
+    ]
+  },
+  {
+    "text": "contato para estagio",
+    "entities": [
+      {
+        "start": 0,
+        "end": 7,
+        "value": "contato",
+        "entity": "domain_info"
+      }
+    ],
+    "predicted_entities": [
+      {
+        "entity": "domain_info",
+        "start": 0,
+        "end": 7,
+        "confidence_entity": 0.9953235983848572,
+        "value": "contato",
+        "extractor": "DIETClassifier",
+        "processors": [
+          "EntitySynonymMapper"
+        ]
+      }
+    ]
+  }
+]

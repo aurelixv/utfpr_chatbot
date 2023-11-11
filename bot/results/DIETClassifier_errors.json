@@ -1,0 +1,100 @@
+[
+  {
+    "text": "cronograma do campus Dois Vizinhos",
+    "entities": [
+      {
+        "start": 21,
+        "end": 34,
+        "value": "Dois Vizinhos",
+        "entity": "campus"
+      }
+    ],
+    "predicted_entities": [
+      {
+        "entity": "domain_info",
+        "start": 0,
+        "end": 10,
+        "value": "cronograma",
+        "extractor": "RegexEntityExtractor",
+        "processors": [
+          "EntitySynonymMapper"
+        ]
+      },
+      {
+        "entity": "campus",
+        "start": 21,
+        "end": 34,
+        "value": "Dois Vizinhos",
+        "extractor": "RegexEntityExtractor",
+        "processors": [
+          "EntitySynonymMapper"
+        ]
+      },
+      {
+        "entity": "domain_info",
+        "start": 0,
+        "end": 10,
+        "value": "cronograma",
+        "extractor": "RegexEntityExtractor",
+        "processors": [
+          "EntitySynonymMapper"
+        ]
+      },
+      {
+        "entity": "domain_info",
+        "start": 0,
+        "end": 10,
+        "confidence_entity": 0.6136930584907532,
+        "value": "cronograma",
+        "extractor": "DIETClassifier",
+        "processors": [
+          "EntitySynonymMapper"
+        ]
+      },
+      {
+        "entity": "campus",
+        "start": 21,
+        "end": 34,
+        "confidence_entity": 0.9950305223464966,
+        "value": "Dois Vizinhos",
+        "extractor": "DIETClassifier",
+        "processors": [
+          "EntitySynonymMapper"
+        ]
+      }
+    ]
+  },
+  {
+    "text": "qual o cronograma para solicitar o auxilio estudantil",
+    "entities": [
+      {
+        "start": 7,
+        "end": 17,
+        "value": "cronograma",
+        "entity": "domain_info"
+      }
+    ],
+    "predicted_entities": [
+      {
+        "entity": "domain_info",
+        "start": 7,
+        "end": 17,
+        "value": "cronograma",
+        "extractor": "RegexEntityExtractor",
+        "processors": [
+          "EntitySynonymMapper"
+        ]
+      },
+      {
+        "entity": "domain_info",
+        "start": 7,
+        "end": 17,
+        "value": "cronograma",
+        "extractor": "RegexEntityExtractor",
+        "processors": [
+          "EntitySynonymMapper"
+        ]
+      }
+    ]
+  }
+]
