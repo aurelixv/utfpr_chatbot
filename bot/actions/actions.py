@@ -19,10 +19,12 @@ import psycopg2
 # For debugging code
 logger = logging.getLogger(__name__)
 
+
 class Credentials:
     """
     Parses the credentials from yaml file
     """
+
     def __init__(self, file_path: str):
         # open credentials file
         with open(file_path, encoding='utf-8') as file:
@@ -38,41 +40,54 @@ class Credentials:
         return f'\nhost: {self.host}\ndatabase: {self.database}\n' \
             f'user: {self.user}\npassword: {self.password}'
 
+
 def psql_connect(credentials: Credentials):
     """
     Establishes a connection to postgres
     """
     try:
         conn = psycopg2.connect(
-            host = credentials.host,
-            database = credentials.database,
-            user = credentials.user,
-            password = credentials.password
+            host=credentials.host,
+            database=credentials.database,
+            user=credentials.user,
+            password=credentials.password
         )
         return conn
     except psycopg2.OperationalError:
         return None
 
+
+def get_tracker_slot(tracker, slot_name: Text):
+    """
+    Function that receives a tracker object and returns the specified slot
+    """
+    # retrieve slot
+    slot = tracker.get_slot(slot_name)
+
+    # pre process
+    if slot:
+        slot = unidecode(slot.upper())
+
+    return slot
+
+
+def get_intent_name(tracker):
+    """
+    Function that receives a tracker object and returns the intent name
+    """
+
+    logger.debug(tracker.latest_message)
+
+    return tracker.latest_message['intent']['name']
+
+
 class ActionGetSchedule(Action):
     """
     Handles the action_get_schedule action
     """
+
     def name(self) -> Text:
         return "action_get_schedule"
-
-    @staticmethod
-    def get_campus_slot(tracker):
-        """
-        Function that receives a tracker object and returns the campus slot
-        """
-        # retrieve slot
-        campus = tracker.get_slot('campus')
-
-        # pre process
-        if campus:
-            campus = unidecode(campus.upper())
-
-        return campus
 
     @staticmethod
     def get_schedule(campus: Text) -> Dict:
@@ -143,10 +158,10 @@ class ActionGetSchedule(Action):
         return None
 
     async def run(self, dispatcher: CollectingDispatcher,
-            tracker: Tracker,
-            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+                  tracker: Tracker,
+                  domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
-        campus = self.get_campus_slot(tracker)
+        campus = get_tracker_slot(tracker, 'campus')
         schedule = self.get_schedule(campus)
 
         if schedule:
@@ -164,57 +179,23 @@ class ActionGetSchedule(Action):
                     f"{phases[phase]['end_hour']} horas.\n\n"
 
             dispatcher.utter_message(text=response)
+            dispatcher.utter_message(text='Fonte dos dados: '
+                                     + 'https://portal.utfpr.edu.br/secretaria/matricula/cronograma-de-matricula')
         else:
-            dispatcher.utter_message(text="Me desculpe, mas não consegui localizar o "\
-                f"cronograma de matrícula de veteranos para o campus {campus.title()}.")
+            dispatcher.utter_message(text="Me desculpe, mas não consegui localizar o "
+                                     f"cronograma de matrícula de veteranos para o campus {campus.title()}.")
 
         # clears the campus slot
         return [SlotSet('campus', None)]
+
 
 class ActionInformInternship(Action):
     """
     Handles the action_inform_internship action
     """
+
     def name(self) -> Text:
         return "action_inform_internship"
-
-    @staticmethod
-    def get_intent_name(tracker):
-        """
-        Function that receives a tracker object and returns the intent name
-        """
-
-        logger.debug(tracker.latest_message)
-
-        return tracker.latest_message['intent']['name']
-
-    @staticmethod
-    def get_internship_type_slot(tracker):
-        """
-        Function that receives a tracker object and returns the internship_type_slot
-        """
-        # retrieve slot
-        internship_type = tracker.get_slot('internship_type')
-
-        # pre process
-        if internship_type:
-            internship_type = unidecode(internship_type.upper())
-
-        return internship_type
-
-    @staticmethod
-    def get_internship_info_slot(tracker):
-        """
-        Function that receives a tracker object and returns the internship_type_info
-        """
-        # retrieve slot
-        internship_info = tracker.get_slot('internship_info')
-
-        # pre process
-        if internship_info:
-            internship_info = unidecode(internship_info.upper())
-
-        return internship_info
 
     @staticmethod
     def get_internship_type_id(internship_type: Text):
@@ -257,7 +238,7 @@ class ActionInformInternship(Action):
                 A.INTERNSHIP_INFO_NAME,
                 A.INTERNSHIP_DESCRIPTION
             FROM INTERNSHIP_INFO A
-            WHERE A.INTERNSHIP_INFO_NAME = (%s)
+            WHERE A.INTERNSHIP_INFO_NAME LIKE (%s)
             LIMIT 1
         """
 
@@ -267,7 +248,7 @@ class ActionInformInternship(Action):
         internship_info_id = None
         if conn:
             with conn.cursor() as cur:
-                cur.execute(q_internship_info, (internship_info,))
+                cur.execute(q_internship_info, (f'%{internship_info}%',))
                 result = cur.fetchall()
 
             conn.close()
@@ -280,8 +261,8 @@ class ActionInformInternship(Action):
     @staticmethod
     def get_internship_text(internship_info_id, internship_type_id):
         """
-        Function that receives an internship_info and queries the database to
-        return the corresponding internship_info_id
+        Function that receives an internship_info_id and internship_type_id and 
+        queries the database to return the corresponding internship_text
         """
         q_internship_text = """
             SELECT A.INTERNSHIP_INFO_ID,
@@ -300,7 +281,8 @@ class ActionInformInternship(Action):
         internship_text = None
         if conn:
             with conn.cursor() as cur:
-                cur.execute(q_internship_text, (internship_info_id, internship_type_id))
+                cur.execute(q_internship_text,
+                            (internship_info_id, internship_type_id))
                 result = cur.fetchall()
 
             conn.close()
@@ -313,35 +295,49 @@ class ActionInformInternship(Action):
         return internship_text
 
     async def run(self, dispatcher: CollectingDispatcher,
-            tracker: Tracker,
-            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+                  tracker: Tracker,
+                  domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
-        internship_type = self.get_internship_type_slot(tracker)
+        internship_type = get_tracker_slot(tracker, 'internship_type')
         internship_type_id = self.get_internship_type_id(internship_type)
-        internship_info = self.get_internship_info_slot(tracker)
+        internship_info = get_tracker_slot(tracker, 'domain_info')
         internship_info_id = self.get_internship_info_id(internship_info)
-        internship_text = self.get_internship_text(internship_info_id, internship_type_id)
-        intent = self.get_intent_name(tracker)
 
         # debug
-        dispatcher.utter_message(text=f'intent: {intent}'\
-            + f'\ninternship_type: {internship_type} id: {internship_type_id}'\
-            + f'\ninternship_info: {internship_info} id: {internship_info_id}'\
-            + f'\ninternship_text: {internship_text}')
+        # intent = get_intent_name(tracker)
+        # dispatcher.utter_message(text=f'intent: {intent}'\
+        #     + f'\ninternship_type: {internship_type} id: {internship_type_id}'\
+        #     + f'\ninternship_info: {internship_info} id: {internship_info_id}'
+
+        if internship_info_id is None:
+            dispatcher.utter_message(text='Me desculpe, ainda não sei informar a '
+                                     + f'respeito de {internship_info} para estágios.')
+        else:
+            if internship_type_id is None:
+                internship_type_id = 1
+
+            internship_text = self.get_internship_text(
+                internship_info_id, internship_type_id)
+
+            dispatcher.utter_message(text=internship_text)
+            dispatcher.utter_message(
+                text='Fonte dos dados: https://portal.utfpr.edu.br/estagios')
 
         # clears the internship_info slot
-        return [SlotSet('internship_info', None)]
+        return [SlotSet('domain_info', None)]
+
 
 class ActionExtractInternshipType(Action):
     """
     Handles the action_extract_internship_type action
     """
+
     def name(self) -> Text:
         return "action_extract_internship_type"
 
     async def run(self, dispatcher: CollectingDispatcher,
-            tracker: Tracker,
-            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+                  tracker: Tracker,
+                  domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
         # retrieve last user message
         latest_message = tracker.latest_message['text']
@@ -349,13 +345,12 @@ class ActionExtractInternshipType(Action):
         # retrieve previously defined internship_type slot
         old_internship_type = tracker.get_slot('internship_type')
 
+        new_internship_type = None
         # regex to find entity
         if re.search('n[aã]o obrigat[oó]rio', latest_message):
             new_internship_type = 'nao obrigatorio'
         elif re.search('obrigat[oó]rio', latest_message):
             new_internship_type = 'obrigatorio'
-        else:
-            new_internship_type = None
 
         # pre process
         if new_internship_type:
@@ -364,15 +359,191 @@ class ActionExtractInternshipType(Action):
 
         return [SlotSet('internship_type', old_internship_type)]
 
+
+class ActionInformAssistance(Action):
+    """
+    Handles the action_inform_assistance action
+    """
+
+    def name(self) -> Text:
+        return "action_inform_assistance"
+
+    @staticmethod
+    def get_assistance_type_id(assistance_type: Text):
+        """
+        Function that receives an assistance_type and queries the database to
+        return the corresponding assistance_type_id
+        """
+        q_assistance_type = """
+            SELECT A.ASSISTANCE_TYPE_ID,
+                A.ASSISTANCE_TYPE_NAME
+            FROM ASSISTANCE_TYPE A
+            WHERE A.ASSISTANCE_TYPE_NAME = (%s)
+            LIMIT 1
+        """
+
+        credentials = Credentials('endpoints.yml')
+        conn = psql_connect(credentials)
+
+        assistance_type_id = None
+        if conn:
+            with conn.cursor() as cur:
+                cur.execute(q_assistance_type, (assistance_type,))
+                result = cur.fetchall()
+
+            conn.close()
+
+            if len(result) > 0:
+                assistance_type_id = result[0][0]
+
+        return assistance_type_id
+
+    @staticmethod
+    def get_assistance_info_id(assistance_info: Text):
+        """
+        Function that receives an assistance_info and queries the database to
+        return the corresponding assistance_info_id
+        """
+        q_assistance_info = """
+            SELECT A.ASSISTANCE_INFO_ID,
+                A.ASSISTANCE_INFO_NAME,
+                A.ASSISTANCE_DESCRIPTION
+            FROM ASSISTANCE_INFO A
+            WHERE A.ASSISTANCE_INFO_NAME LIKE (%s)
+            LIMIT 1
+        """
+
+        credentials = Credentials('endpoints.yml')
+        conn = psql_connect(credentials)
+
+        assistance_info_id = None
+        if conn:
+            with conn.cursor() as cur:
+                cur.execute(q_assistance_info, (f'%{assistance_info}%',))
+                result = cur.fetchall()
+
+            conn.close()
+
+            if len(result) > 0:
+                assistance_info_id = result[0][0]
+
+        return assistance_info_id
+
+    @staticmethod
+    def get_assistance_text(assistance_info_id, assistance_type_id):
+        """
+        Function that receives an assistance_info_id and assistance_type_id and 
+        queries the database to return the corresponding assistance_text
+        """
+        q_assistance_text = """
+            SELECT A.ASSISTANCE_INFO_ID,
+                A.ASSISTANCE_TYPE_ID,
+                A.UPDATE_TIMESTAMP,
+                A.INFO_TEXT
+            FROM ASSISTANCE_TEXT A
+            WHERE A.ASSISTANCE_INFO_ID = (%s)
+                AND A.ASSISTANCE_TYPE_ID = (%s)
+            LIMIT 1
+        """
+
+        credentials = Credentials('endpoints.yml')
+        conn = psql_connect(credentials)
+
+        assistance_text = None
+        if conn:
+            with conn.cursor() as cur:
+                cur.execute(q_assistance_text,
+                            (assistance_info_id, assistance_type_id))
+                result = cur.fetchall()
+
+            conn.close()
+
+            if len(result) > 0:
+                # pre-process to enable breaklines
+                if result[0][3]:
+                    assistance_text = result[0][3].replace('\\n', '\n')
+
+        return assistance_text
+
+    async def run(self, dispatcher: CollectingDispatcher,
+                  tracker: Tracker,
+                  domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+        assistance_type = get_tracker_slot(tracker, 'assistance_type')
+        assistance_type_id = self.get_assistance_type_id(assistance_type)
+        assistance_info = get_tracker_slot(tracker, 'domain_info')
+        assistance_info_id = self.get_assistance_info_id(assistance_info)
+
+        # debug
+        # intent = get_intent_name(tracker)
+        # dispatcher.utter_message(text=f'intent: {intent}'\
+        #     + f'\nassistance_type: {assistance_type} id: {assistance_type_id}'\
+        #     + f'\nassistance_info: {assistance_info} id: {assistance_info_id}'
+
+        if assistance_info_id is None:
+            dispatcher.utter_message(text='Me desculpe, ainda não sei informar a '
+                                     + f'respeito de {assistance_info} para auxílio estudantil.')
+        else:
+            if assistance_type_id is None:
+                assistance_type_id = 1
+
+            assistance_text = self.get_assistance_text(
+                assistance_info_id, assistance_type_id)
+
+            dispatcher.utter_message(text=assistance_text)
+            dispatcher.utter_message(text='Fonte dos dados: '
+                                     + 'https://portal.utfpr.edu.br/editais/assessoria-estudantil/reitoria/'
+                                     + 'processo-de-selecao-do-auxilio-estudantil-2023-1')
+
+        # clears the internship_info slot
+        return [SlotSet('domain_info', None)]
+
+
+class ActionExtractAssistanceType(Action):
+    """
+    Handles the action_extract_internship_type action
+    """
+
+    def name(self) -> Text:
+        return "action_extract_assistance_type"
+
+    async def run(self, dispatcher: CollectingDispatcher,
+                  tracker: Tracker,
+                  domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+        # retrieve last user message
+        latest_message = tracker.latest_message['text']
+
+        # retrieve previously defined internship_type slot
+        old_assistance_type = tracker.get_slot('assistance_type')
+
+        new_assistance_type = None
+        # regex to find entity
+        if re.search('b[aá]sico', latest_message):
+            new_assistance_type = 'basico'
+        elif re.search('moradia', latest_message):
+            new_assistance_type = 'moradia'
+        elif re.search('alimenta[cç][aã]o', latest_message):
+            new_assistance_type = 'alimentacao'
+
+        # pre process
+        if new_assistance_type:
+            new_assistance_type = unidecode(new_assistance_type.upper())
+            return [SlotSet('assistance_type', new_assistance_type)]
+
+        return [SlotSet('assistance_type', old_assistance_type)]
+
+
 class ActionClearSlots(Action):
     """
     Handles the action_clear_slots action
     """
+
     def name(self) -> Text:
         return "action_clear_slots"
 
     async def run(self, dispatcher: CollectingDispatcher,
-            tracker: Tracker,
-            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+                  tracker: Tracker,
+                  domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
         return [AllSlotsReset()]

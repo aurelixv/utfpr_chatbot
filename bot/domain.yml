@@ -4,28 +4,65 @@ actions:
   - action_get_schedule
   - action_inform_internship
   - action_extract_internship_type
+  - action_inform_assistance
+  - action_extract_assistance_type
   - action_clear_slots
 
 forms:
   enrollment_schedule_form:
+    ignored_intents:
+      - chitchat
+      - faq
+      - internship
+      - assistance
+      - inform_domain_info
+      - cancel
+      - start
     required_slots:
-        - campus
+      - campus
 
   internship_form:
+    ignored_intents:
+      - chitchat
+      - faq
+      - enrollment_schedule
+      - assistance
+      - inform_campus
+      - cancel
+      - start
     required_slots:
-        - internship_info
+      - domain_info
+
+  assistance_form:
+    ignored_intents:
+      - chitchat
+      - faq
+      - enrollment_schedule
+      - internship
+      - inform_campus
+      - cancel
+      - start
+    required_slots:
+      - domain_info
 
 entities:
   - campus
-  # - internship_type
-  - internship_info
+  - domain_info
 
 slots:
   campus:
     type: text
+    influence_conversation: false
     mappings:
     - type: from_entity
       entity: campus
+
+  domain_info:
+    type: text
+    influence_conversation: false
+    mappings:
+    - type: from_entity
+      entity: domain_info
 
   internship_type:
     type: text
@@ -33,32 +70,24 @@ slots:
     mappings:
     - type: custom
 
-  internship_info:
-    type: categorical
+  assistance_type:
+    type: text
     influence_conversation: false
-    values:
-      - Informacoes Gerais
-      - Diferenca
-      - Documentacao
-      - Relatorios
-      - Alterar horario
-      - Mais informacoes contatos
     mappings:
-      - type: from_entity
-        entity: internship_info
+    - type: custom
 
 intents:
   - start
   - cancel
-  - clear
   - chitchat
   - faq
   - enrollment_schedule
   - inform_campus
   - affirm
   - deny
+  - inform_domain_info
   - internship
-  - inform_internship_info
+  - assistance
 
 responses:
   utter_start:
@@ -76,6 +105,21 @@ responses:
       button_type: vertical
       text: Olá! Eu sou o assistente virtual da UTFPR, como posso lhe ajudar?
 
+  utter_start2:
+    - buttons:
+      - payload: matricula
+        title: Cronograma de Matrícula
+      - payload: estagio
+        title: Informaçōes de Estágio
+      - payload: auxilio
+        title: Auxílio Estudantil
+      - payload: site da instituicao
+        title: Site da Instituição
+      - payload: portal do aluno
+        title: Portal do Aluno
+      button_type: vertical
+      text: "Por favor, escolha uma das opções para que eu consiga lhe auxiliar:"
+
   utter_cancel:
     - text: Cancelando...
 
@@ -90,42 +134,61 @@ responses:
       - text: Estou à disposição...
       - text: Às suas ordens.
 
-  utter_chitchat/fun_fact:
-      - text: Você sabia que...
+  utter_chitchat/bot_challenge:
+    - text: Eu sou um assistente virtual construído para auxiliar com dúvidas à respeito da UTFPR.
 
-  utter_chitchat/joke:
-      - text: Piada
+  utter_chitchat/mood_great:
+    - text: Fico feliz em saber!
+
+  utter_chitchat/mood_unhappy:
+    - text: Poxa, que pena. Espero que fique melhor logo...
 
   utter_faq/info:
     - text: "A Universidade Tecnológica Federal do Paraná (UTFPR) possui 13 câmpus no estado do Paraná, totalizando 2549 professores, 1176 técnicos administrativos e mais de 32 mil estudantes.\n\nSaiba mais em: https://portal.utfpr.edu.br/institucional/sobre-a-utfpr-1"
 
   utter_faq/portal:
-    - text: Portal do aluno
-
-  utter_internship/info:
-    - text: "Informacoes sobre estagio: em breve"
+    - text: "Você consegue acessar o portal do aluno pelo seguinte link: https://portal.utfpr.edu.br/alunos/portal-do-aluno"
 
   utter_ask_campus:
     - text: Para qual campus?
 
-  utter_ask_internship_info:
+  utter_ask_internship_form_domain_info:
     - buttons:
-      - payload: informacoes gerais
+      - payload: informacoes
         title: Informações Gerais
       - payload: diferenca
         title: Obrigatório vs Não Obrigatório
-      - payload: documentacao
+      - payload: documentos
         title: Documentação
       - payload: relatorios
         title: Relatórios
-      - payload: alterar horario
+      - payload: horario
         title: Alterar horário
-      - payload: mais informacoes
+      - payload: contatos
         title: Mais informações/Contatos
       - payload: cancelar
         title: Cancelar
       button_type: vertical
       text: O que deseja saber sobre estágio?
+
+  utter_ask_assistance_form_domain_info:
+    - buttons:
+      - payload: informacoes
+        title: Informações sobre auxílio
+      - payload: elegibilidade
+        title: Elegibilidade
+      - payload: cronograma
+        title: Cronograma
+      - payload: inscricoes
+        title: Inscrições
+      - payload: documentos
+        title: Documentos
+      - payload: contatos
+        title: Contatos
+      - payload: cancelar
+        title: Cancelar
+      button_type: vertical
+      text: O que deseja saber sobre auxílio estudantil?
 
   utter_did_that_help:
     - text: Isso ajudou você?
@@ -144,26 +207,6 @@ responses:
 
   utter_clear:
     - text: Limpando memória do bot...
-
-  # utter_greet:
-  # - buttons:
-  #   - payload: /bem
-  #     title: Estou bem
-  #   - payload: /mal
-  #     title: Estou mal
-  #   text: "Olá, como você está?"
-
-  # utter_cheer_up:
-  # - text: "Algo pra te alegrar:"
-  #   image: "https://i.imgur.com/nGF1K8f.jpg"
-
-
-
-  # utter_goodbye:
-  # - text: "Tchau!"
-
-  # utter_iamabot:
-  # - text: "Eu ser robô..."
 
 session_config:
   session_expiration_time: 60

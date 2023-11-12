@@ -1,0 +1,7 @@
+ASSISTANCE_INFO_ID;ASSISTANCE_INFO_NAME;ASSISTANCE_DESCRIPTION
+1;INFORMACOES, INFORMACAO;Informações básicas sobre o auxílio estudantil
+2;ELEGIBILIDADE;Elegibilidade para solicitar auxílio estudantil
+3;CRONOGRAMA;Cronograma vigente para solicitar auxílio estudantil
+4;INSCRICOES, INSCRICAO, INSCREVER;Informações sobre a inscrição para o auxílio estudantil
+5;DOCUMENTOS, DOCUMENTACAO, DOCUMENTO;Documentos necessários para solicitar o auxílio estudantil
+6;CONTATOS, CONTATO;Contatos para esclarecimentos de dúvidas sobre o auxílio estudantil
