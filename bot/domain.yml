@@ -130,9 +130,8 @@ responses:
     - text: Nos vemos no futuro...
 
   utter_chitchat/thank:
-      - text: Por nada!
-      - text: Estou à disposição...
-      - text: Às suas ordens.
+      - text: De nada!
+      - text: Disponha!
 
   utter_chitchat/bot_challenge:
     - text: Eu sou um assistente virtual construído para auxiliar com dúvidas à respeito da UTFPR.

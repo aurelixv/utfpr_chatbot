@@ -43,6 +43,8 @@ nlu:
     - quando começa a matrícula em [medianeira](campus)
     - poderia me informar sobre a matrícula no campus [Pato Branco](campus)
     - quero informações de matrícula em [apucarana](campus)
+    - quero saber o cronograma de matrícula de veteranos para o campus [toledo](campus)
+    - me informe a matrícula de [ponta grossa](campus)
 
 - intent: inform_campus
   examples: |
@@ -50,6 +52,7 @@ nlu:
     - cidade de [medianeira](campus)
     - na universidade [Dois Vizinhos](campus)
     - [Londrina](campus)
+    - [ponta grossa](campus)
 
 - intent: inform_domain_info
   examples: |
@@ -85,6 +88,8 @@ nlu:
     - o que e o auxilio basico
     - quais sao os [documentos](domain_info) necessarios para o auxilio estudantil
     - qual o [cronograma](domain_info) para solicitar o auxilio estudantil
+    - me mostre [informacoes](domain_info) do auxílio alimentação
+    - me informe dos critérios de [elegibilidade](domain_info) do auxílio estudantil
 
 - intent: chitchat/goodbye
   examples: |
@@ -212,6 +217,9 @@ nlu:
     - ajudou
     - sim, me ajudou
     - ajudou sim
+    - sim ajudou
+    - sim, ajudou
+    - positivo
 
 - intent: deny
   examples: |
